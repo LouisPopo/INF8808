@@ -65,7 +65,29 @@ export function getTopPlayers (data) {
  * @returns {object[]} The nested data set grouping the line count by player and by act
  */
 export function summarizeLines (data) {
-  // TODO : Generate the data structure as defined above
+  console.log(data)
+  // The reduce() method executes a user-supplied "reducer" callback function on each element of the array,
+  // in order, passing in the return value from the calculation on the preceding element.
+  // The final result of running the reducer across all elements of the array is a single value.
+  const t = data.reduce((acc, curr) => {
+    // check if in acc, there is already the Act of curr
+    const actExists = acc.some(a => a.Act === curr.Act)
+    if (!actExists) { // if no, we create a new object
+      acc.push({ Act: curr.Act, Players: [] })
+    }
+    // Find the index of the curr.Act in the acc
+    const actIndex = acc.findIndex(a => a.Act === curr.Act)
+    // Check if curr.Player already exists in the act
+    const playerExsists = acc[actIndex].Players.some(p => p.Player === curr.Player)
+    if (!playerExsists) { // if not, push new object with count 1
+      acc[actIndex].Players.push({ Player: curr.Player, Count: 1 })
+    } else { // else, find index of player in act and increment
+      const playerIndex = acc[actIndex].Players.findIndex(p => p.Player === curr.Player)
+      acc[actIndex].Players[playerIndex].Count++
+    }
+    return acc
+  }, [])
+  console.log(t)
   return []
 }
 

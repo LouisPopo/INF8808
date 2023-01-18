@@ -196,7 +196,46 @@ function getTopPlayers(data) {
  * @returns {object[]} The nested data set grouping the line count by player and by act
  */
 function summarizeLines(data) {
-  // TODO : Generate the data structure as defined above
+  console.log(data);
+  // The reduce() method executes a user-supplied "reducer" callback function on each element of the array,
+  // in order, passing in the return value from the calculation on the preceding element.
+  // The final result of running the reducer across all elements of the array is a single value.
+  var t = data.reduce(function (acc, curr) {
+    // check if in acc, there is already the Act of curr
+    var actExists = acc.some(function (a) {
+      return a.Act === curr.Act;
+    });
+    if (!actExists) {
+      // if no, we create a new object
+      acc.push({
+        Act: curr.Act,
+        Players: []
+      });
+    }
+    // Find the index of the curr.Act in the acc
+    var actIndex = acc.findIndex(function (a) {
+      return a.Act === curr.Act;
+    });
+    // Check if curr.Player already exists in the act
+    var playerExsists = acc[actIndex].Players.some(function (p) {
+      return p.Player === curr.Player;
+    });
+    if (!playerExsists) {
+      // if not, push new object with count 1
+      acc[actIndex].Players.push({
+        Player: curr.Player,
+        Count: 1
+      });
+    } else {
+      // else, find index of player in act and increment
+      var playerIndex = acc[actIndex].Players.findIndex(function (p) {
+        return p.Player === curr.Player;
+      });
+      acc[actIndex].Players[playerIndex].Count++;
+    }
+    return acc;
+  }, []);
+  console.log(t);
   return [];
 }
 
@@ -2546,7 +2585,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63885" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63424" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
