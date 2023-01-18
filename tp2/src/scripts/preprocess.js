@@ -102,7 +102,7 @@ export function replaceOthers (data, top) {
   // and replace these players in the data structure by a player with name 'Other' and
   // a line count corresponding to the sum of lines
   // iterate through all act of data
-  const g = data.forEach(act => {
+  data.forEach(act => {
     // count the number of lines made by players not in top
     const otherLines = act.Players.reduce((acc, curr) => {
       if (!top.includes(curr.Player)) {
@@ -115,5 +115,5 @@ export function replaceOthers (data, top) {
     // add the other information
     act.Players.push({ Player: 'Other', Count: otherLines })
   })
-  return g
+  return data
 }

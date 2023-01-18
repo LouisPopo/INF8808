@@ -251,7 +251,7 @@ function replaceOthers(data, top) {
   // and replace these players in the data structure by a player with name 'Other' and
   // a line count corresponding to the sum of lines
   // iterate through all act of data
-  var g = data.forEach(function (act) {
+  data.forEach(function (act) {
     // count the number of lines made by players not in top
     var otherLines = act.Players.reduce(function (acc, curr) {
       if (!top.includes(curr.Player)) {
@@ -269,7 +269,7 @@ function replaceOthers(data, top) {
       Count: otherLines
     });
   });
-  return g;
+  return data;
 }
 },{}],"scripts/viz.js":[function(require,module,exports) {
 "use strict";
