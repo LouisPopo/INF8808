@@ -196,7 +196,6 @@ function getTopPlayers(data) {
  * @returns {object[]} The nested data set grouping the line count by player and by act
  */
 function summarizeLines(data) {
-  console.log(data);
   // The reduce() method executes a user-supplied "reducer" callback function on each element of the array,
   // in order, passing in the return value from the calculation on the preceding element.
   // The final result of running the reducer across all elements of the array is a single value.
@@ -235,8 +234,7 @@ function summarizeLines(data) {
     }
     return acc;
   }, []);
-  console.log(t);
-  return [];
+  return t;
 }
 
 /**
@@ -252,7 +250,26 @@ function replaceOthers(data, top) {
   // TODO : For each act, sum the lines uttered by players not in the top 5 for the play
   // and replace these players in the data structure by a player with name 'Other' and
   // a line count corresponding to the sum of lines
-  return [];
+  // iterate through all act of data
+  var g = data.forEach(function (act) {
+    // count the number of lines made by players not in top
+    var otherLines = act.Players.reduce(function (acc, curr) {
+      if (!top.includes(curr.Player)) {
+        acc += curr.Count;
+      }
+      return acc;
+    }, 0);
+    // only keep the top players
+    act.Players = act.Players.filter(function (player) {
+      return top.includes(player.Player);
+    });
+    // add the other information
+    act.Players.push({
+      Player: 'Other',
+      Count: otherLines
+    });
+  });
+  return g;
 }
 },{}],"scripts/viz.js":[function(require,module,exports) {
 "use strict";
