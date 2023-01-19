@@ -15,5 +15,6 @@ export function getContents (d) {
       + A bold label for the player's line count
         followed by the number of lines
   */
-  return ''
+  console.log(d)
+  return '<p>TEST</p>'
 }
