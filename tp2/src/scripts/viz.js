@@ -38,15 +38,23 @@ export function updateYScale (scale, data, height) {
 export function createGroups (data, x) {
   // TODO : Create the groups
   // d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', (d) => `translate(${x(d.Act)}, 0)`)
-  //return groups
-  d3.select('#graph-g')
-    .selectAll('g')
-    .data(data, function (d) { return d })
-    .enter()
+  console.log('creating group')
+
+  const groups = d3.select('#graph-g')
+    .selectAll('.my-class')
+    .data(data)
+
+  groups.attr('id', function (d) { return 'groupAct' + d.Act })
+    .attr('class', 'my-class')
+    .attr('transform', function (d) { return 'translate(' + x(d.Act) + ',0)' })
+    .attr('width', x.bandwidth())
+
+  groups.enter()
     .append('g')
     .attr('id', function (d) { return 'groupAct' + d.Act })
     .attr('class', 'my-class')
     .attr('transform', function (d) { return 'translate(' + x(d.Act) + ',0)' })
+    .attr('width', x.bandwidth())
 }
 
 /**
@@ -61,23 +69,23 @@ export function createGroups (data, x) {
  */
 export function drawBars (y, xSubgroup, players, height, color, tip) {
   // TODO : Draw the bars
+  console.log('drawing bars')
   const groups = d3.select('#graph-g').selectAll('.my-class')
 
-  groups.selectAll('rect')
+  const bars = groups.selectAll('rect')
     .data(function (d) { return d.Players })
-    .enter().append('rect')
-    .attr('height', function (d, i) {
-      console.log(d.Player + ' : ' + d.Count)
-      return height - y(d.Count)
-    })
-    .attr('x', function (d) {
-      return xSubgroup(d.Player)
-    })
-    .attr('y', function (d) {
-      return y(d.Count)
-    })
+
+  bars.attr('height', function (d, i) { return height - y(d.Count) })
+    .attr('x', function (d) { return xSubgroup(d.Player) })
+    .attr('y', function (d) { return y(d.Count) })
     .attr('width', xSubgroup.bandwidth())
-    .attr('fill', function (d) {
-      return color(d.Player)
-    })
+    .attr('fill', function (d) { return color(d.Player) })
+
+  bars.enter()
+    .append('rect')
+    .attr('height', function (d, i) { return height - y(d.Count) })
+    .attr('x', function (d) { return xSubgroup(d.Player) })
+    .attr('y', function (d) { return y(d.Count) })
+    .attr('width', xSubgroup.bandwidth())
+    .attr('fill', function (d) { return color(d.Player) })
 }
