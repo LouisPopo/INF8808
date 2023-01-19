@@ -290,6 +290,7 @@ exports.updateYScale = updateYScale;
  */
 function updateGroupXScale(scale, data, width) {
   // TODO : Set the domain and range of the groups' x scale
+  scale = d3.scaleLinear().domain([d3.min(data.x), d3.max(data.x)]).range([0, width]);
 }
 
 /**
@@ -301,6 +302,7 @@ function updateGroupXScale(scale, data, width) {
  */
 function updateYScale(scale, data, height) {
   // TODO : Set the domain and range of the graph's y scale
+  scale = d3.domain([d3.min(data.y), d3.max(data.y)]).range([0, height]);
 }
 
 /**
@@ -312,7 +314,12 @@ function updateYScale(scale, data, height) {
  */
 function createGroups(data, x) {
   // TODO : Create the groups
-  d3.select('#graph-g');
+
+  var groups = d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', function (d) {
+    return "translate(".concat(x(d.Act), ", 0)");
+  });
+  console.info(groups);
+  return groups;
 }
 
 /**
@@ -2602,7 +2609,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63424" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54541" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

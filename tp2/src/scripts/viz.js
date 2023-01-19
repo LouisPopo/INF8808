@@ -8,6 +8,7 @@
  */
 export function updateGroupXScale (scale, data, width) {
   // TODO : Set the domain and range of the groups' x scale
+  scale = d3.scaleLinear().domain([d3.min(data.x), d3.max(data.x)]).range([0, width])
 }
 
 /**
@@ -19,6 +20,7 @@ export function updateGroupXScale (scale, data, width) {
  */
 export function updateYScale (scale, data, height) {
   // TODO : Set the domain and range of the graph's y scale
+  scale = d3.domain([d3.min(data.y), d3.max(data.y)]).range([0, height])
 }
 
 /**
@@ -30,7 +32,9 @@ export function updateYScale (scale, data, height) {
  */
 export function createGroups (data, x) {
   // TODO : Create the groups
-  d3.select('#graph-g')
+
+  const groups = d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', (d) => `translate(${x(d.Act)}, 0)`)
+  return groups
 }
 
 /**
