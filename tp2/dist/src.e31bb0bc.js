@@ -302,7 +302,7 @@ function updateGroupXScale(scale, data, width) {
  */
 function updateYScale(scale, data, height) {
   // TODO : Set the domain and range of the graph's y scale
-  scale = d3.domain([d3.min(data.y), d3.max(data.y)]).range([0, height]);
+  scale = d3.scaleLinear().domain([d3.min(data.y), d3.max(data.y)]).range([0, height]);
 }
 
 /**
@@ -314,11 +314,9 @@ function updateYScale(scale, data, height) {
  */
 function createGroups(data, x) {
   // TODO : Create the groups
-
   var groups = d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', function (d) {
     return "translate(".concat(x(d.Act), ", 0)");
   });
-  console.info(groups);
   return groups;
 }
 
@@ -2609,7 +2607,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54541" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62629" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
