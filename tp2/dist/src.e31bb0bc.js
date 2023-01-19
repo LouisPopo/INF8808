@@ -358,16 +358,8 @@ function drawBars(y, xSubgroup, players, height, color, tip) {
   // TODO : Draw the bars
   console.log('drawing bars');
   var groups = d3.select('#graph-g').selectAll('.my-class');
-  var mouseover = function mouseover(d) {
-    tip.style('opacity', 1);
-  };
-  var mousemove = function mousemove(e) {
-    tip.style('left', e.pageX - 10 + 'px') // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-    .style('top', e.pageY - 35 + 'px');
-  };
-  var mouseleave = function mouseleave(d) {
-    tip.style('opacity', 0);
-  };
+  tip.direction('n');
+  tip.offset([-5, 0]);
   var bars = groups.selectAll('rect').data(function (d) {
     return d.Players;
   });
@@ -379,7 +371,10 @@ function drawBars(y, xSubgroup, players, height, color, tip) {
     return y(d.Count);
   }).attr('width', xSubgroup.bandwidth()).attr('fill', function (d) {
     return color(d.Player);
-  }).on('mouseover', mouseover).on('mousemove', mousemove).on('mouseleave', mouseleave);
+  }).on('mouseover', function () {
+    var hoveredElement = d3.select(this).data()[0];
+    tip.show(hoveredElement, this);
+  }).on('mouseleave', tip.hide);
   bars.enter().append('rect').attr('height', function (d, i) {
     return height - y(d.Count);
   }).attr('x', function (d) {
@@ -388,7 +383,10 @@ function drawBars(y, xSubgroup, players, height, color, tip) {
     return y(d.Count);
   }).attr('width', xSubgroup.bandwidth()).attr('fill', function (d) {
     return color(d.Player);
-  }).on('mouseover', mouseover).on('mousemove', mousemove).on('mouseleave', mouseleave);
+  }).on('mouseover', function () {
+    var hoveredElement = d3.select(this).data()[0];
+    tip.show(hoveredElement, this);
+  }).on('mouseleave', tip.hide);
 }
 },{}],"scripts/helper.js":[function(require,module,exports) {
 "use strict";
@@ -539,8 +537,8 @@ function getContents(d) {
       + A bold label for the player's line count
         followed by the number of lines
   */
-  console.log(d);
-  return '<p>TEST</p>';
+  var content = '<div style="font-family: Grenze Gotish; font-size=24px; font-weight=normal"> ' + d.Player + '</div>' + '<div>' + d.Count + ' lines</div>';
+  return content;
 }
 },{}],"../node_modules/d3-collection/src/map.js":[function(require,module,exports) {
 "use strict";

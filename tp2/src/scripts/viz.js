@@ -72,19 +72,8 @@ export function drawBars (y, xSubgroup, players, height, color, tip) {
   console.log('drawing bars')
   const groups = d3.select('#graph-g').selectAll('.my-class')
 
-  const mouseover = function (d) {
-    tip
-      .style('opacity', 1)
-  }
-  const mousemove = function (e) {
-    tip
-      .style('left', (e.pageX - 10) + 'px') // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-      .style('top', (e.pageY - 35) + 'px')
-  }
-  const mouseleave = function (d) {
-    tip
-      .style('opacity', 0)
-  }
+  tip.direction('n')
+  tip.offset([-5, 0])
 
   const bars = groups.selectAll('rect')
     .data(function (d) { return d.Players })
@@ -94,9 +83,11 @@ export function drawBars (y, xSubgroup, players, height, color, tip) {
     .attr('y', function (d) { return y(d.Count) })
     .attr('width', xSubgroup.bandwidth())
     .attr('fill', function (d) { return color(d.Player) })
-    .on('mouseover', mouseover)
-    .on('mousemove', mousemove)
-    .on('mouseleave', mouseleave)
+    .on('mouseover', function () {
+      const hoveredElement = d3.select(this).data()[0]
+      tip.show(hoveredElement, this)
+    })
+    .on('mouseleave', tip.hide)
 
   bars.enter()
     .append('rect')
@@ -105,7 +96,9 @@ export function drawBars (y, xSubgroup, players, height, color, tip) {
     .attr('y', function (d) { return y(d.Count) })
     .attr('width', xSubgroup.bandwidth())
     .attr('fill', function (d) { return color(d.Player) })
-    .on('mouseover', mouseover)
-    .on('mousemove', mousemove)
-    .on('mouseleave', mouseleave)
+    .on('mouseover', function () {
+      const hoveredElement = d3.select(this).data()[0]
+      tip.show(hoveredElement, this)
+    })
+    .on('mouseleave', tip.hide)
 }
