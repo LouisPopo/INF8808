@@ -281,6 +281,12 @@ exports.createGroups = createGroups;
 exports.drawBars = drawBars;
 exports.updateGroupXScale = updateGroupXScale;
 exports.updateYScale = updateYScale;
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 /**
  * Sets the domain and range of the X scale.
  *
@@ -290,7 +296,10 @@ exports.updateYScale = updateYScale;
  */
 function updateGroupXScale(scale, data, width) {
   // TODO : Set the domain and range of the groups' x scale
-  scale = d3.scaleLinear().domain([d3.min(data.x), d3.max(data.x)]).range([0, width]);
+  // scale = d3.scaleLinear().domain([d3.min(data.x), d3.max(data.x)]).range([0, width])
+  scale.domain(data.map(function (a) {
+    return a.Act;
+  })).range([0, width]);
 }
 
 /**
@@ -302,7 +311,13 @@ function updateGroupXScale(scale, data, width) {
  */
 function updateYScale(scale, data, height) {
   // TODO : Set the domain and range of the graph's y scale
-  scale = d3.scaleLinear().domain([d3.min(data.y), d3.max(data.y)]).range([0, height]);
+  // scale = d3.scaleLinear().domain([d3.min(data.y), d3.max(data.y)]).range([0, height])
+  var maxLines = Math.max.apply(Math, _toConsumableArray(data.map(function (act) {
+    return Math.max.apply(Math, _toConsumableArray(act.Players.map(function (p) {
+      return p.Count;
+    })));
+  })));
+  scale.domain([0, maxLines]).range([height, 0]);
 }
 
 /**
@@ -314,10 +329,15 @@ function updateYScale(scale, data, height) {
  */
 function createGroups(data, x) {
   // TODO : Create the groups
-  var groups = d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', function (d) {
-    return "translate(".concat(x(d.Act), ", 0)");
+  // d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', (d) => `translate(${x(d.Act)}, 0)`)
+  //return groups
+  d3.select('#graph-g').selectAll('g').data(data, function (d) {
+    return d;
+  }).enter().append('g').attr('id', function (d) {
+    return 'groupAct' + d.Act;
+  }).attr('class', 'my-class').attr('transform', function (d) {
+    return 'translate(' + x(d.Act) + ',0)';
   });
-  return groups;
 }
 
 /**
@@ -332,7 +352,19 @@ function createGroups(data, x) {
  */
 function drawBars(y, xSubgroup, players, height, color, tip) {
   // TODO : Draw the bars
-  d3.select('#graph-g');
+  var groups = d3.select('#graph-g').selectAll('.my-class');
+  groups.selectAll('rect').data(function (d) {
+    return d.Players;
+  }).enter().append('rect').attr('height', function (d, i) {
+    console.log(d.Player + ' : ' + d.Count);
+    return height - y(d.Count);
+  }).attr('x', function (d) {
+    return xSubgroup(d.Player);
+  }).attr('y', function (d) {
+    return y(d.Count);
+  }).attr('width', xSubgroup.bandwidth()).attr('fill', function (d) {
+    return color(d.Player);
+  });
 }
 },{}],"scripts/helper.js":[function(require,module,exports) {
 "use strict";
@@ -2607,7 +2639,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62629" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65023" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
