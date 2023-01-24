@@ -1,3 +1,4 @@
+
 /**
  * Draws a legend in the area at the bottom of the screen, corresponding to the bars' colors
  *
@@ -8,4 +9,26 @@ export function draw (data, color) {
   // TODO : Generate the legend in the div with class "legend". Each SVG rectangle
   // should have a width and height set to 15.
   // Tip : Append one div per legend element using class "legend-element".
+  console.log(data)
+  const legend = d3.select('.legend')
+
+  const legendPropreties = legend.selectAll('.legend-element')
+    .data(data)
+    .enter()
+    .append('div')
+    .attr('class', 'legend-element')
+
+  legendPropreties.append('svg')
+    .attr('width', 15)
+    .attr('height', 15)
+    .append('rect')
+    .attr('width', 15)
+    .attr('height', 15)
+    .attr('fill', c => color(c))
+    // .attr('transform', 'translate(20,0)')
+
+  legendPropreties.append('text')
+    .attr('x', 25)
+    .attr('y', 12)
+    .text(d => d)
 }
