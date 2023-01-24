@@ -44,11 +44,13 @@ export function createGroups (data, x) {
     .selectAll('.my-class')
     .data(data)
 
+  // Cette section est pour ceux qui sont déjà la
   groups.attr('id', function (d) { return 'groupAct' + d.Act })
     .attr('class', 'my-class')
     .attr('transform', function (d) { return 'translate(' + x(d.Act) + ',0)' })
     .attr('width', x.bandwidth())
 
+  // Cette section est pour append les elements.
   groups.enter()
     .append('g')
     .attr('id', function (d) { return 'groupAct' + d.Act })
