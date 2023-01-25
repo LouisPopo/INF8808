@@ -521,10 +521,8 @@ function draw(data, color) {
   var legendPropreties = legend.selectAll('.legend-element').data(data).enter().append('div').attr('class', 'legend-element');
   legendPropreties.append('svg').attr('width', 15).attr('height', 15).append('rect').attr('width', 15).attr('height', 15).attr('fill', function (c) {
     return color(c);
-  });
-  // .attr('transform', 'translate(20,0)')
-
-  legendPropreties.append('text').attr('x', 25).attr('y', 12).text(function (d) {
+  }).attr('right', 10);
+  legendPropreties.append('text').attr('x', 25).attr('y', 15).text(function (d) {
     return d;
   });
 }
@@ -2677,7 +2675,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60548" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60565" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

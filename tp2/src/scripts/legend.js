@@ -25,10 +25,10 @@ export function draw (data, color) {
     .attr('width', 15)
     .attr('height', 15)
     .attr('fill', c => color(c))
-    // .attr('transform', 'translate(20,0)')
+    .attr('right', 10)
 
   legendPropreties.append('text')
     .attr('x', 25)
-    .attr('y', 12)
+    .attr('y', 15)
     .text(d => d)
 }
