@@ -44,15 +44,7 @@ export function createGroups (data, x) {
     .selectAll('.my-class')
     .data(data)
 
-  // Cette section est pour ceux qui sont déjà la
-  groups.attr('id', function (d) { return 'groupAct' + d.Act })
-    .attr('class', 'my-class')
-    .attr('transform', function (d) { return 'translate(' + x(d.Act) + ',0)' })
-    .attr('width', x.bandwidth())
-
-  // Cette section est pour append les elements.
-  groups.enter()
-    .append('g')
+  groups.join('g')
     .attr('id', function (d) { return 'groupAct' + d.Act })
     .attr('class', 'my-class')
     .attr('transform', function (d) { return 'translate(' + x(d.Act) + ',0)' })
@@ -80,19 +72,9 @@ export function drawBars (y, xSubgroup, players, height, color, tip) {
   const bars = groups.selectAll('rect')
     .data(function (d) { return d.Players })
 
-  bars.attr('height', function (d, i) { return height - y(d.Count) })
-    .attr('x', function (d) { return xSubgroup(d.Player) })
-    .attr('y', function (d) { return y(d.Count) })
-    .attr('width', xSubgroup.bandwidth())
-    .attr('fill', function (d) { return color(d.Player) })
-    .on('mouseover', function () {
-      const hoveredElement = d3.select(this).data()[0]
-      tip.show(hoveredElement, this)
-    })
-    .on('mouseleave', tip.hide)
+  // join function witll append element if not present and update if already present
 
-  bars.enter()
-    .append('rect')
+  bars.join('rect')
     .attr('height', function (d, i) { return height - y(d.Count) })
     .attr('x', function (d) { return xSubgroup(d.Player) })
     .attr('y', function (d) { return y(d.Count) })

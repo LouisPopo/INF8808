@@ -16,7 +16,8 @@ export function getContents (d) {
         followed by the number of lines
   */
   const content =
-    '<div style="font-family: Grenze Gotish; font-size=24px; font-weight=normal"> ' + d.Player + '</div>'+
-    '<div>' + d.Count + ' lines</div>'
+
+    '<div id=tooltip-title> ' + d.Player + '</div>' +
+    '<div class=tooltip-value>' + d.Count + ' lines</div>'
   return content
 }

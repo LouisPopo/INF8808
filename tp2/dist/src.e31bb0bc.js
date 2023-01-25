@@ -332,16 +332,7 @@ function createGroups(data, x) {
   // d3.select('#graph-g').append('g').attr('class', 'group').attr('transform', (d) => `translate(${x(d.Act)}, 0)`)
   console.log('creating group');
   var groups = d3.select('#graph-g').selectAll('.my-class').data(data);
-
-  // Cette section est pour ceux qui sont déjà la
-  groups.attr('id', function (d) {
-    return 'groupAct' + d.Act;
-  }).attr('class', 'my-class').attr('transform', function (d) {
-    return 'translate(' + x(d.Act) + ',0)';
-  }).attr('width', x.bandwidth());
-
-  // Cette section est pour append les elements.
-  groups.enter().append('g').attr('id', function (d) {
+  groups.join('g').attr('id', function (d) {
     return 'groupAct' + d.Act;
   }).attr('class', 'my-class').attr('transform', function (d) {
     return 'translate(' + x(d.Act) + ',0)';
@@ -367,19 +358,10 @@ function drawBars(y, xSubgroup, players, height, color, tip) {
   var bars = groups.selectAll('rect').data(function (d) {
     return d.Players;
   });
-  bars.attr('height', function (d, i) {
-    return height - y(d.Count);
-  }).attr('x', function (d) {
-    return xSubgroup(d.Player);
-  }).attr('y', function (d) {
-    return y(d.Count);
-  }).attr('width', xSubgroup.bandwidth()).attr('fill', function (d) {
-    return color(d.Player);
-  }).on('mouseover', function () {
-    var hoveredElement = d3.select(this).data()[0];
-    tip.show(hoveredElement, this);
-  }).on('mouseleave', tip.hide);
-  bars.enter().append('rect').attr('height', function (d, i) {
+
+  // join function witll append element if not present and update if already present
+
+  bars.join('rect').attr('height', function (d, i) {
     return height - y(d.Count);
   }).attr('x', function (d) {
     return xSubgroup(d.Player);
@@ -550,7 +532,7 @@ function getContents(d) {
       + A bold label for the player's line count
         followed by the number of lines
   */
-  var content = '<div style="font-family: Grenze Gotish; font-size=24px; font-weight=normal"> ' + d.Player + '</div>' + '<div>' + d.Count + ' lines</div>';
+  var content = '<div id=tooltip-title> ' + d.Player + '</div>' + '<div class=tooltip-value>' + d.Count + ' lines</div>';
   return content;
 }
 },{}],"../node_modules/d3-collection/src/map.js":[function(require,module,exports) {
@@ -2675,7 +2657,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60565" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64969" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
