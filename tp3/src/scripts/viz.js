@@ -7,6 +7,10 @@
  */
 export function setColorScaleDomain (colorScale, data) {
   // TODO : Set domain of color scale
+  const minCount = d3.min(data, function (d) { return d.Counts})
+  const maxCount = d3.max(data, function (d) { return d.Counts})
+
+  colorScale.domain([minCount, maxCount])
 }
 
 /**
@@ -16,6 +20,12 @@ export function setColorScaleDomain (colorScale, data) {
  */
 export function appendRects (data) {
   // TODO : Append SVG rect elements
+  const heatmap = d3.select('.heatmap-svg')
+
+  heatmap.selectAll('g')
+    .data(data)
+    .enter()
+    .append('g').append('rect')
 }
 
 /**
@@ -27,7 +37,11 @@ export function appendRects (data) {
  * @param {Function} range A utilitary funtion that could be useful to generate a list of numbers in a range
  */
 export function updateXScale (xScale, data, width, range) {
-  // TODO : Update X scale
+
+  const minYear = d3.min(data, function (d) { return d.Plantation_Year})
+  const maxYear = d3.max(data, function (d) { return d.Plantation_Year})
+
+  xScale.domain(range(minYear, maxYear)).range([0, width])
 }
 
 /**
@@ -40,6 +54,7 @@ export function updateXScale (xScale, data, width, range) {
 export function updateYScale (yScale, neighborhoodNames, height) {
   // TODO : Update Y scale
   // Make sure to sort the neighborhood names alphabetically
+  yScale.domain(neighborhoodNames.sort(d3.ascending)).range([height, 0])
 }
 
 /**
@@ -49,6 +64,9 @@ export function updateYScale (yScale, neighborhoodNames, height) {
  */
 export function drawXAxis (xScale) {
   // TODO : Draw X axis
+  d3.select('.x.axis')
+    //.attr('transform', 'translate(0, ' + height + ')')
+    .call(d3.axisTop(xScale).tickFormat(x => `${x}`))
 }
 
 /**
@@ -58,7 +76,9 @@ export function drawXAxis (xScale) {
  * @param {number} width The width of the graphic
  */
 export function drawYAxis (yScale, width) {
-  // TODO : Draw Y axis
+  d3.select('.y.axis')
+    .attr('transform', 'translate(' + width + ' ,0)')
+    .call(d3.axisRight(yScale).tickFormat(x => `${x}`))
 }
 
 /**
@@ -66,6 +86,9 @@ export function drawYAxis (yScale, width) {
  */
 export function rotateYTicks () {
   // TODO : Rotate Y ticks.
+  d3.select('.y.axis')
+    .selectAll('text')
+    //.attr('transform', 'rotate(-30)')
 }
 
 /**
@@ -78,4 +101,12 @@ export function rotateYTicks () {
  */
 export function updateRects (xScale, yScale, colorScale) {
   // TODO : Set position, size and fill of rectangles according to bound data
+
+  // const rects = d3.select('#heatmap').selectAll('g')
+
+  // rects
+
+  
+  //   .attr('x', function (d) { return xScale(d.Plantation_Year)})
+
 }

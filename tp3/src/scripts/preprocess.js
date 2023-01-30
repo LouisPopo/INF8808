@@ -5,7 +5,7 @@
  * @returns {string[]} The names of the neighorhoods in the data set
  */
 export function getNeighborhoodNames (data) {
-  const names = new Set(data.map(function (d) {return d.Arrond_Nom}))
+  const names = Array.from(new Set(data.map(function (d) {return d.Arrond_Nom})))
   return names
 }
 
@@ -50,8 +50,6 @@ export function summarizeYearlyCounts (data) {
     }
     return acc
   }, [])
-  
-  console.log(t)
   return t
 
 }

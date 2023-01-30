@@ -172,9 +172,9 @@ exports.summarizeYearlyCounts = summarizeYearlyCounts;
  * @returns {string[]} The names of the neighorhoods in the data set
  */
 function getNeighborhoodNames(data) {
-  var names = new Set(data.map(function (d) {
+  var names = Array.from(new Set(data.map(function (d) {
     return d.Arrond_Nom;
-  }));
+  })));
   return names;
 }
 
@@ -225,7 +225,6 @@ function summarizeYearlyCounts(data) {
     }
     return acc;
   }, []);
-  console.log(t);
   return t;
 }
 
@@ -281,6 +280,13 @@ exports.updateYScale = updateYScale;
  */
 function setColorScaleDomain(colorScale, data) {
   // TODO : Set domain of color scale
+  var minCount = d3.min(data, function (d) {
+    return d.Counts;
+  });
+  var maxCount = d3.max(data, function (d) {
+    return d.Counts;
+  });
+  colorScale.domain([minCount, maxCount]);
 }
 
 /**
@@ -290,6 +296,8 @@ function setColorScaleDomain(colorScale, data) {
  */
 function appendRects(data) {
   // TODO : Append SVG rect elements
+  var heatmap = d3.select('.heatmap-svg');
+  heatmap.selectAll('g').data(data).enter().append('g').append('rect');
 }
 
 /**
@@ -301,7 +309,13 @@ function appendRects(data) {
  * @param {Function} range A utilitary funtion that could be useful to generate a list of numbers in a range
  */
 function updateXScale(xScale, data, width, range) {
-  // TODO : Update X scale
+  var minYear = d3.min(data, function (d) {
+    return d.Plantation_Year;
+  });
+  var maxYear = d3.max(data, function (d) {
+    return d.Plantation_Year;
+  });
+  xScale.domain(range(minYear, maxYear)).range([0, width]);
 }
 
 /**
@@ -314,6 +328,7 @@ function updateXScale(xScale, data, width, range) {
 function updateYScale(yScale, neighborhoodNames, height) {
   // TODO : Update Y scale
   // Make sure to sort the neighborhood names alphabetically
+  yScale.domain(neighborhoodNames.sort(d3.ascending)).range([height, 0]);
 }
 
 /**
@@ -323,6 +338,11 @@ function updateYScale(yScale, neighborhoodNames, height) {
  */
 function drawXAxis(xScale) {
   // TODO : Draw X axis
+  d3.select('.x.axis')
+  //.attr('transform', 'translate(0, ' + height + ')')
+  .call(d3.axisTop(xScale).tickFormat(function (x) {
+    return "".concat(x);
+  }));
 }
 
 /**
@@ -332,7 +352,9 @@ function drawXAxis(xScale) {
  * @param {number} width The width of the graphic
  */
 function drawYAxis(yScale, width) {
-  // TODO : Draw Y axis
+  d3.select('.y.axis').attr('transform', 'translate(' + width + ' ,0)').call(d3.axisRight(yScale).tickFormat(function (x) {
+    return "".concat(x);
+  }));
 }
 
 /**
@@ -340,6 +362,8 @@ function drawYAxis(yScale, width) {
  */
 function rotateYTicks() {
   // TODO : Rotate Y ticks.
+  d3.select('.y.axis').selectAll('text');
+  //.attr('transform', 'rotate(-30)')
 }
 
 /**
@@ -352,6 +376,12 @@ function rotateYTicks() {
  */
 function updateRects(xScale, yScale, colorScale) {
   // TODO : Set position, size and fill of rectangles according to bound data
+
+  // const rects = d3.select('#heatmap').selectAll('g')
+
+  // rects
+
+  //   .attr('x', function (d) { return xScale(d.Plantation_Year)})
 }
 },{}],"scripts/legend.js":[function(require,module,exports) {
 "use strict";
