@@ -5,8 +5,8 @@
  * @returns {string[]} The names of the neighorhoods in the data set
  */
 export function getNeighborhoodNames (data) {
-  // TODO: Return the neihborhood names
-  return []
+  const names = new Set(data.map(function (d) {return d.Arrond_Nom}))
+  return names
 }
 
 /**
@@ -18,8 +18,12 @@ export function getNeighborhoodNames (data) {
  * @returns {object[]} The filtered data
  */
 export function filterYears (data, start, end) {
-  // TODO : Filter the data by years
-  return []
+
+  const filtered = data.filter(function (d) { 
+    const date = new Date(d.Date_Plantation).getFullYear()
+    return (date >= start) && (date <= end)  
+  })
+  return filtered
 }
 
 /**
@@ -31,7 +35,25 @@ export function filterYears (data, start, end) {
  */
 export function summarizeYearlyCounts (data) {
   // TODO : Construct the required data table
-  return []
+  
+  const t = data.reduce((acc, curr) => {
+
+    const currYear = new Date(curr.Date_Plantation).getFullYear()
+
+    // pass on each element of the data list
+    const arrondYearExists = acc.some(d => (d.Arrond_Nom === curr.Arrond_Nom) && (d.Plantation_Year === currYear))
+    if (!arrondYearExists) {
+      acc.push({Arrond_Nom : curr.Arrond_Nom, Plantation_Year : currYear, Counts : 1})
+    } else {
+      const arrondYearIndex = acc.findIndex(d => (d.Arrond_Nom === curr.Arrond_Nom) && (d.Plantation_Year === currYear))
+      acc[arrondYearIndex].Counts++
+    }
+    return acc
+  }, [])
+  
+  console.log(t)
+  return t
+
 }
 
 /**
@@ -48,5 +70,13 @@ export function summarizeYearlyCounts (data) {
  */
 export function fillMissingData (data, neighborhoods, start, end, range) {
   // TODO : Find missing data and fill with 0
-  return []
+  range(start, end).forEach(y => {
+    neighborhoods.forEach(n => {
+      const yearNeighExists = data.some(d => (d.Arrond_Nom === n) && (d.Plantation_Year === y))
+      if (!yearNeighExists) {
+        data.push({Arrond_Nom : n, Plantation_Year : y, Counts : 0})
+      }
+    })
+  });
+  return data
 }
