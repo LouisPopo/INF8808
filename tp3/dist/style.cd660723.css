@@ -87,8 +87,6 @@ button:hover, button:active {
   .axis text {
       font-family: 'Roboto';
       cursor: default;
-      transform-box: fill-box;
-      transform-origin: center;
   }
 
   .axis path {
