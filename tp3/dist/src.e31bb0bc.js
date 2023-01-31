@@ -296,8 +296,14 @@ function setColorScaleDomain(colorScale, data) {
  */
 function appendRects(data) {
   // TODO : Append SVG rect elements
-  var heatmap = d3.select('.heatmap-svg');
-  heatmap.selectAll('g').data(data).enter().append('g').append('rect');
+  // const heatmap = d3.select('.heatmap-svg')
+
+  // heatmap.selectAll('.my-class')
+  //   .data(data)
+  //   .enter()
+  //   .append('g').append('rect')
+
+  d3.select('#graph-g').selectAll('.my-class').data(data).enter().append('g').append('rect');
 }
 
 /**
@@ -328,7 +334,7 @@ function updateXScale(xScale, data, width, range) {
 function updateYScale(yScale, neighborhoodNames, height) {
   // TODO : Update Y scale
   // Make sure to sort the neighborhood names alphabetically
-  yScale.domain(neighborhoodNames.sort(d3.ascending)).range([height, 0]);
+  yScale.domain(neighborhoodNames.sort(d3.descending)).range([height, 0]);
 }
 
 /**
@@ -338,11 +344,11 @@ function updateYScale(yScale, neighborhoodNames, height) {
  */
 function drawXAxis(xScale) {
   // TODO : Draw X axis
-  d3.select('.x.axis')
+  var xAxis = d3.axisTop().scale(xScale);
+  d3.select('.x.axis').call(xAxis);
+  //d3.select('.x.axis')
   //.attr('transform', 'translate(0, ' + height + ')')
-  .call(d3.axisTop(xScale).tickFormat(function (x) {
-    return "".concat(x);
-  }));
+  //.call(d3.axisTop(xScale).tickFormat(x => `${x}`))
 }
 
 /**
@@ -352,18 +358,19 @@ function drawXAxis(xScale) {
  * @param {number} width The width of the graphic
  */
 function drawYAxis(yScale, width) {
-  d3.select('.y.axis').attr('transform', 'translate(' + width + ' ,0)').call(d3.axisRight(yScale).tickFormat(function (x) {
-    return "".concat(x);
-  }));
+  var yAxis = d3.axisRight().scale(yScale);
+  d3.select('.y.axis').call(yAxis).attr('transform', 'translate(' + width + ' ,0)');
+
+  // d3.select('.y.axis')
+  //   .attr('transform', 'translate(' + width + ' ,0)')
+  //   .call(d3.axisRight(yScale).tickFormat(x => `${x}`))
 }
 
 /**
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
 function rotateYTicks() {
-  // TODO : Rotate Y ticks.
-  d3.select('.y.axis').selectAll('text');
-  //.attr('transform', 'rotate(-30)')
+  d3.select('.y.axis').selectAll('text').style("text-anchor", "start");
 }
 
 /**
@@ -379,9 +386,16 @@ function updateRects(xScale, yScale, colorScale) {
 
   // const rects = d3.select('#heatmap').selectAll('g')
 
-  // rects
-
   //   .attr('x', function (d) { return xScale(d.Plantation_Year)})
+
+  var d = d3.select('#heatmap').selectAll('g').selectAll('rect').attr('x', function (d) {
+    return xScale(d.Plantation_Year);
+  }).attr('y', function (d) {
+    return yScale(d.Arrond_Nom);
+  }).attr('width', xScale.bandwidth()).attr('height', yScale.bandwidth()).attr('fill', function (d) {
+    return colorScale(d.Counts);
+  });
+  console.log(d);
 }
 },{}],"scripts/legend.js":[function(require,module,exports) {
 "use strict";
