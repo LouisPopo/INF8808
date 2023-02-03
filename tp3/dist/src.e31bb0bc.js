@@ -456,7 +456,15 @@ function initLegendAxis() {
  * @param {*} colorScale The color scale represented by the legend
  */
 function draw(x, y, height, width, fill, colorScale) {
-  // TODO : Draw the legend
+  // On dessine le rectangle de couleur
+
+  d3.select('.legend.bar').attr('x', x).attr('y', y).attr('width', width).attr('height', height).attr('fill', fill);
+
+  // On cree un scale pour convertir le nb d'arbres en position y sur l'axe
+  var lin = d3.scaleLinear().domain(colorScale.domain()).range([height, 0]);
+
+  // on positionne le legend axis sur lequel on call le axis left
+  d3.select('.legend.axis').attr('transform', "translate(".concat(x, ",").concat(y, ")")).call(d3.axisLeft(lin).ticks(7));
 }
 },{}],"scripts/hover.js":[function(require,module,exports) {
 "use strict";
@@ -485,6 +493,12 @@ exports.unselectTicks = unselectTicks;
  */
 function setRectHandler(xScale, yScale, rectSelected, rectUnselected, selectTicks, unselectTicks) {
   // TODO : Select the squares and set their event handlers
+  console.log('testing');
+  d3.select('#graph-g').selectAll('rect').on('mouseenter', function () {
+    rectSelected(this, xScale, yScale);
+  }).on('mouseleave', function () {
+    rectUnselected(this);
+  });
 }
 
 /**
@@ -502,6 +516,18 @@ function rectSelected(element, xScale, yScale) {
   // TODO : Display the number of trees on the selected element
   // Make sure the nimber is centered. If there are 1000 or more
   // trees, display the text in white so it contrasts with the background.
+  //console.log(d3.select(this).data()[0])
+  //console.log(xScale)
+
+  var arrondName = d3.select(element).data()[0].Arrond_Nom;
+  var year = d3.select(element).data()[0].Plantation_Year;
+  var counts = d3.select(element).data()[0].Counts;
+  var fillColor = counts > 1000 ? 'white' : 'black';
+  console.log('=====');
+  console.log(xScale(year));
+  console.log(yScale(arrondName));
+  d3.select(element.parentNode).append('text').text(counts).attr("text-anchor", "middle").attr("font-family", "Roboto Slab").attr("font-size", "8px").attr("fill", fillColor).attr('x', xScale(year)).attr('y', yScale(arrondName)).attr('transform', "translate(".concat(xScale.bandwidth() / 2, ", ").concat(yScale.bandwidth() / 2, ")"));
+  //.attr('fill', 'blue')
 }
 
 /**
@@ -515,6 +541,9 @@ function rectSelected(element, xScale, yScale) {
  */
 function rectUnselected(element) {
   // TODO : Unselect the element
+  //d3.select
+
+  d3.select(element.parentNode).select('text').remove();
 }
 
 /**
@@ -3334,7 +3363,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50491" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53277" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

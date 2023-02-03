@@ -14,6 +14,12 @@
  */
 export function setRectHandler (xScale, yScale, rectSelected, rectUnselected, selectTicks, unselectTicks) {
   // TODO : Select the squares and set their event handlers
+  console.log('testing')
+
+  d3.select('#graph-g')
+    .selectAll('rect')
+    .on('mouseenter', function() { rectSelected(this, xScale, yScale) })
+    .on('mouseleave', function() { rectUnselected(this) })
 }
 
 /**
@@ -31,6 +37,30 @@ export function rectSelected (element, xScale, yScale) {
   // TODO : Display the number of trees on the selected element
   // Make sure the nimber is centered. If there are 1000 or more
   // trees, display the text in white so it contrasts with the background.
+  //console.log(d3.select(this).data()[0])
+  //console.log(xScale)
+
+
+  const arrondName = d3.select(element).data()[0].Arrond_Nom
+  const year = d3.select(element).data()[0].Plantation_Year
+  const counts = d3.select(element).data()[0].Counts
+
+  const fillColor = counts > 1000 ? 'white' : 'black'
+
+  console.log('=====')
+  console.log(xScale(year))
+  console.log(yScale(arrondName))
+  d3.select(element.parentNode)
+    .append('text')
+    .text(counts)
+    .attr("text-anchor", "middle")
+    .attr("font-family", "Roboto Slab")
+    .attr("font-size", "8px")
+    .attr("fill", fillColor)
+    .attr('x', xScale(year))
+    .attr('y', yScale(arrondName))
+    .attr('transform', `translate(${xScale.bandwidth()/2}, ${yScale.bandwidth()/2})` )
+    //.attr('fill', 'blue')
 }
 
 /**
@@ -44,6 +74,10 @@ export function rectSelected (element, xScale, yScale) {
  */
 export function rectUnselected (element) {
   // TODO : Unselect the element
+  //d3.select
+
+  d3.select(element.parentNode).select('text').remove()
+
 }
 
 /**

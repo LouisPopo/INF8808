@@ -54,5 +54,23 @@ export function initLegendAxis () {
  * @param {*} colorScale The color scale represented by the legend
  */
 export function draw (x, y, height, width, fill, colorScale) {
-  // TODO : Draw the legend
+
+  // On dessine le rectangle de couleur
+
+  d3.select('.legend.bar')
+    .attr('x', x)
+    .attr('y', y)
+    .attr('width', width)
+    .attr('height', height)
+    .attr('fill', fill)
+
+  // On cree un scale pour convertir le nb d'arbres en position y sur l'axe
+  const lin = d3.scaleLinear()
+    .domain(colorScale.domain())
+    .range([height, 0])
+
+  // on positionne le legend axis sur lequel on call le axis left
+  d3.select('.legend.axis')
+    .attr('transform', `translate(${x},${y})`)
+    .call(d3.axisLeft(lin).ticks(7))
 }
