@@ -71,6 +71,7 @@ export function rectSelected (element, xScale, yScale) {
     .attr('x', xScale(year))
     .attr('y', yScale(arrondName))
     .attr('transform', `translate(${xScale.bandwidth()/2}, ${yScale.bandwidth()/2})` )
+    .style('pointer-events', 'none') // pour eviter que onmouseleave soit triggered quand on est sur le texte
     //.attr('fill', 'blue')
 }
 
@@ -105,7 +106,7 @@ export function selectTicks (name, year) {
       return d === name
     })
     .select('text')
-    .style("font-size", "23px") // ici il faudrait le mettre bold mais j'arrive pas.
+    .style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
 
   d3.select('.x.axis')
     .selectAll('.tick')
