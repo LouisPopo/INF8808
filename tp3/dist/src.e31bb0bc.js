@@ -496,8 +496,10 @@ function setRectHandler(xScale, yScale, rectSelected, rectUnselected, selectTick
   console.log('testing');
   d3.select('#graph-g').selectAll('rect').on('mouseenter', function () {
     rectSelected(this, xScale, yScale);
+    selectTicks(d3.select(this).data()[0].Arrond_Nom, d3.select(this).data()[0].Plantation_Year);
   }).on('mouseleave', function () {
     rectUnselected(this);
+    unselectTicks();
   });
 }
 
@@ -523,9 +525,6 @@ function rectSelected(element, xScale, yScale) {
   var year = d3.select(element).data()[0].Plantation_Year;
   var counts = d3.select(element).data()[0].Counts;
   var fillColor = counts > 1000 ? 'white' : 'black';
-  console.log('=====');
-  console.log(xScale(year));
-  console.log(yScale(arrondName));
   d3.select(element.parentNode).append('text').text(counts).attr("text-anchor", "middle").attr("font-family", "Roboto Slab").attr("font-size", "8px").attr("fill", fillColor).attr('x', xScale(year)).attr('y', yScale(arrondName)).attr('transform', "translate(".concat(xScale.bandwidth() / 2, ", ").concat(yScale.bandwidth() / 2, ")"));
   //.attr('fill', 'blue')
 }
@@ -553,13 +552,23 @@ function rectUnselected(element) {
  * @param {number} year The year associated with the tick text to make bold
  */
 function selectTicks(name, year) {
-  // TODO : Make the ticks bold
+  d3.select('.y.axis').selectAll('.tick').filter(function (d) {
+    return d === name;
+  }).select('text').style("font-size", "23px"); // ici il faudrait le mettre bold mais j'arrive pas.
+
+  d3.select('.x.axis').selectAll('.tick').filter(function (d) {
+    return d === year;
+  }).select('text').style("font-size", "15px"); // ici il faudrait le mettre bold mais j'arrive pas.
 }
 
 /**
  * Returns the font weight of all ticks to normal.
  */
 function unselectTicks() {
+  d3.select('.y.axis').selectAll('.tick').select('text').style('font-size', '10px');
+  d3.select('.x.axis').selectAll('.tick').select('text').style('font-size', '10px');
+
+  //console.log(d3.select('.y.axis').selectAll('.tick').data())
   // TODO : Unselect the ticks
 }
 },{}],"scripts/util.js":[function(require,module,exports) {
