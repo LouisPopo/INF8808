@@ -106,7 +106,8 @@ export function selectTicks (name, year) {
       return d === name
     })
     .select('text')
-    .style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
+    .style("font-weight", "900")
+    //.style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
 
   d3.select('.x.axis')
     .selectAll('.tick')
@@ -114,7 +115,8 @@ export function selectTicks (name, year) {
       return d === year
     })
     .select('text')
-    .style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
+    .style("font-weight", "900")
+    //.style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
 
   
 }
@@ -127,12 +129,14 @@ export function unselectTicks () {
   d3.select('.y.axis')
     .selectAll('.tick')
     .select('text')
-    .style('font-size', '10px')
+    .style("font-weight", "normal")
+    //.style('font-size', '10px')
 
   d3.select('.x.axis')
     .selectAll('.tick')
     .select('text')
-    .style('font-size', '10px')
+    .style("font-weight", "normal")
+    //.style('font-size', '10px')
 
   //console.log(d3.select('.y.axis').selectAll('.tick').data())
   // TODO : Unselect the ticks

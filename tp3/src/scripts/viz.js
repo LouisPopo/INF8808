@@ -101,7 +101,8 @@ export function drawYAxis (yScale, width) {
 export function rotateYTicks () {
   d3.select('.y.axis')
     .selectAll('text')
-    .style("text-anchor", "start");
+    .style("text-anchor", "start")
+    .attr('transform', 'rotate(-30)');
 }
 
 /**

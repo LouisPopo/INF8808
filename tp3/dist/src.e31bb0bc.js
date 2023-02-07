@@ -370,7 +370,7 @@ function drawYAxis(yScale, width) {
  * Rotates the ticks on the Y axis 30 degrees towards the left.
  */
 function rotateYTicks() {
-  d3.select('.y.axis').selectAll('text').style("text-anchor", "start");
+  d3.select('.y.axis').selectAll('text').style("text-anchor", "start").attr('transform', 'rotate(-30)');
 }
 
 /**
@@ -554,19 +554,24 @@ function rectUnselected(element) {
 function selectTicks(name, year) {
   d3.select('.y.axis').selectAll('.tick').filter(function (d) {
     return d === name;
-  }).select('text').style("font-size", "15px"); // ici il faudrait le mettre bold mais j'arrive pas.
+  }).select('text').style("font-weight", "900");
+  //.style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
 
   d3.select('.x.axis').selectAll('.tick').filter(function (d) {
     return d === year;
-  }).select('text').style("font-size", "15px"); // ici il faudrait le mettre bold mais j'arrive pas.
+  }).select('text').style("font-weight", "900");
+  //.style("font-size", "15px") // ici il faudrait le mettre bold mais j'arrive pas.
 }
 
 /**
  * Returns the font weight of all ticks to normal.
  */
 function unselectTicks() {
-  d3.select('.y.axis').selectAll('.tick').select('text').style('font-size', '10px');
-  d3.select('.x.axis').selectAll('.tick').select('text').style('font-size', '10px');
+  d3.select('.y.axis').selectAll('.tick').select('text').style("font-weight", "normal");
+  //.style('font-size', '10px')
+
+  d3.select('.x.axis').selectAll('.tick').select('text').style("font-weight", "normal");
+  //.style('font-size', '10px')
 
   //console.log(d3.select('.y.axis').selectAll('.tick').data())
   // TODO : Unselect the ticks
@@ -3372,7 +3377,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53277" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62752" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
