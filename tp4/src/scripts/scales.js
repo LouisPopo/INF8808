@@ -10,7 +10,20 @@
  */
 export function setRadiusScale (data) {
   // TODO : Set scale
-  return {}
+
+
+  let populations = []
+  data['2000'].forEach((d) => { populations.push(d.Population) });
+  data['2015'].forEach((d) => { populations.push(d.Population) });
+
+  const maxPop = d3.max(populations)
+  const minPop = d3.min(populations)
+
+  const s = d3.scaleLinear().domain([minPop, maxPop]).range([5,20])
+
+  console.log(s(maxPop))
+
+  return s
 }
 
 /**
@@ -24,8 +37,12 @@ export function setRadiusScale (data) {
  * @returns {*} The ordinal scale used to determine the color
  */
 export function setColorScale (data) {
-  // TODO : Set scale
-  return {}
+  let continents = new Set();
+
+  data['2000'].forEach((d) => { continents.add(d.Continent) })
+  data['2015'].forEach((d) => { continents.add(d.Continent) })
+  
+  return d3.scaleOrdinal(d3.schemeSet1)
 }
 
 /**
@@ -36,8 +53,14 @@ export function setColorScale (data) {
  * @returns {*} The linear scale in X
  */
 export function setXScale (width, data) {
-  // TODO : Set scale
-  return {}
+  let GDPS = []
+  
+  data['2000'].forEach((d) => { GDPS.push(d.GDP) })
+  data['2015'].forEach((d) => { GDPS.push(d.GDP) })
+
+  const maxGDP = d3.max(GDPS)
+
+  return d3.scaleLog().domain([100,maxGDP]).range([0,width])
 }
 
 /**
@@ -48,6 +71,12 @@ export function setXScale (width, data) {
  * @returns {*} The linear scale in Y
  */
 export function setYScale (height, data) {
-  // TODO : Set scale
-  return {}
+  let CO2S = []
+  
+  data['2000'].forEach((d) => { CO2S.push(d.CO2) })
+  data['2015'].forEach((d) => { CO2S.push(d.CO2) })
+
+  const maxCO2 = d3.max(CO2S)
+
+  return d3.scaleLog().domain([0.01,maxCO2]).range([height,0])
 }

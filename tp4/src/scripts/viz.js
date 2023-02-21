@@ -7,6 +7,14 @@
  */
 export function positionLabels (g, width, height) {
   // TODO : Position axis labels
+  g.select('.x.axis-text')
+    .attr('x', width / 2)
+    .attr('y', height + 40)
+
+  g.select('.y.axis-text')
+    .attr('x', -40)
+    .attr('y', height / 2)
+
 }
 
 /**
@@ -22,6 +30,19 @@ export function drawCircles (data, rScale, colorScale) {
   // and each circle's color depends on its continent.
   // The fill opacity of each circle is 70%
   // The outline of the circles is white
+
+  const g = d3.select('#graph-g').append('g').attr('id', 'circles')
+
+  d3.select('#circles')
+    .selectAll('circle')
+    .data(data)
+    .enter()
+    .append('circle')
+    .attr('r', function (d) { return rScale(d.Population)} )
+    .attr('fill', function (d) { return colorScale(d.Continent)})
+    .attr('fill-opacity', 0.7)
+    .attr('stroke', 'white')
+
 }
 
 /**
@@ -45,6 +66,13 @@ export function setCircleHoverHandler (tip) {
 export function moveCircles (xScale, yScale, transitionDuration) {
   // TODO : Set up the transition and place the circle centers
   // in x and y according to their GDP and CO2 respectively
+
+  d3.select('#circles')
+    .selectAll('circle')
+    .transition(transitionDuration)
+    .attr('cx', function (d) { return xScale(d.GDP) })
+    .attr('cy', function (d) { return yScale(d.CO2) })
+
 }
 
 /**

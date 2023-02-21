@@ -168,11 +168,11 @@ function reloadCSS() {
   }, 50);
 }
 module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"assets/typography.css":[function(require,module,exports) {
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"assets/style.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./fonts/roboto/roboto-v20-latin-regular.woff2":[["roboto-v20-latin-regular.4700f6d2.woff2","assets/fonts/roboto/roboto-v20-latin-regular.woff2"],"assets/fonts/roboto/roboto-v20-latin-regular.woff2"],"./fonts/roboto/roboto-v20-latin-regular.woff":[["roboto-v20-latin-regular.377f7333.woff","assets/fonts/roboto/roboto-v20-latin-regular.woff"],"assets/fonts/roboto/roboto-v20-latin-regular.woff"],"./fonts/roboto-slab/roboto-slab-v12-latin-regular.woff2":[["roboto-slab-v12-latin-regular.2893b4cc.woff2","assets/fonts/roboto-slab/roboto-slab-v12-latin-regular.woff2"],"assets/fonts/roboto-slab/roboto-slab-v12-latin-regular.woff2"],"./fonts/roboto-slab/roboto-slab-v12-latin-regular.woff":[["roboto-slab-v12-latin-regular.46b9acf3.woff","assets/fonts/roboto-slab/roboto-slab-v12-latin-regular.woff"],"assets/fonts/roboto-slab/roboto-slab-v12-latin-regular.woff"],"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -197,7 +197,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50571" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50041" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
@@ -342,4 +342,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/typography.880a8441.js.map
+//# sourceMappingURL=/style.cd660723.js.map
