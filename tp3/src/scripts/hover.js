@@ -66,7 +66,7 @@ export function rectSelected (element, xScale, yScale) {
     .text(counts)
     .attr("text-anchor", "middle")
     .attr("font-family", "Roboto Slab")
-    .attr("font-size", "8px")
+    .attr("font-size", "9px")
     .attr("fill", fillColor)
     .attr('x', xScale(year))
     .attr('y', yScale(arrondName))
@@ -136,7 +136,6 @@ export function unselectTicks () {
     .selectAll('.tick')
     .select('text')
     .style("font-weight", "normal")
-    //.style('font-size', '10px')
 
   //console.log(d3.select('.y.axis').selectAll('.tick').data())
   // TODO : Unselect the ticks
