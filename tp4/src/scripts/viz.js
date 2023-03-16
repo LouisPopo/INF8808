@@ -62,6 +62,8 @@ export function setCircleHoverHandler (tip) {
     // increase opacity
     const circle = d3.select(d)._groups.at(0).at(0);
     console.log(circle)
+    const content=getContents(circle)
+    console.log(content)
     d3.select(this).style('opacity', 1);
   });
 

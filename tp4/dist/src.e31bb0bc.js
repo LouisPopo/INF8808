@@ -8689,6 +8689,8 @@ function setCircleHoverHandler(tip) {
     // increase opacity
     var circle = d3.select(d)._groups.at(0).at(0);
     console.log(circle);
+    var content = (0, _tooltip.getContents)(circle);
+    console.log(content);
     d3.select(this).style('opacity', 1);
   });
   bubbles.on('mouseout', function (event, d) {
