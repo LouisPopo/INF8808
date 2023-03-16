@@ -62,6 +62,9 @@ export function setCircleHoverHandler (tip) {
 
   bubbles.on('mouseover', function(event, d) {
     // increase opacity
+    const content=getContents(bubbles.data().at(0))
+    console.log(content)
+    drawLegend(20,content,10)
     d3.select(this).style('opacity', 1);
   });
 

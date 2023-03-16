@@ -8,6 +8,9 @@
  */
 export function getContents (d) {
   // TODO : Generate tooltip contents
+  console.log(d)
+
+
   const name = d.name;
   const population = d3.format(',')(d.population);
   const gdp = d3.format('$,.2f')(d.gdp);

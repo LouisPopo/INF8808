@@ -8611,6 +8611,7 @@ exports.getContents = getContents;
  */
 function getContents(d) {
   // TODO : Generate tooltip contents
+  console.log(d);
   var name = d.name;
   var population = d3.format(',')(d.population);
   var gdp = d3.format('$,.2f')(d.gdp);
@@ -8687,6 +8688,9 @@ function setCircleHoverHandler(tip) {
   console.log(bubbles);
   bubbles.on('mouseover', function (event, d) {
     // increase opacity
+    var content = (0, _tooltip.getContents)(bubbles.data().at(0));
+    console.log(content);
+    (0, _legend.drawLegend)(20, content, 10);
     d3.select(this).style('opacity', 1);
   });
   bubbles.on('mouseout', function (event, d) {
