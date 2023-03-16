@@ -8,26 +8,24 @@
  */
 export function getContents (d) {
   // TODO : Generate tooltip contents
-  console.log(d)
 
+  let content = `<div class="tooltip-label">`;
 
-  const name = d.name;
-  const population = d3.format(',')(d.population);
-  const gdp = d3.format('$,.2f')(d.gdp);
-  const co2 = d3.format(',')(d.co2);
-
-  let content = `<div class="tooltip-label">${name}</div>`;
-
-  if (d.population) {
-    content += `<div class="tooltip-row">Population: ${population}</div>`;
+  if(d["Country Name"]) {
+    content+=`<div class="tooltip-row">Country:${d["Country Name"]}</div>`;
   }
 
-  if (d.gdp) {
-    content += `<div class="tooltip-row">GDP: ${gdp}</div>`;
+  if(d["Population"]) {
+    content += `<div class="tooltip-row">Population:${d["Population"]}</div>`;
+  }
+  
+  if (d["GDP"]) {
+    content += `<div class="tooltip-row">GDP:${d["GDP"]}</div>`;
   }
 
-  if (d.co2) {
-    content += `<div class="tooltip-row">CO2 Emissions: ${co2} metric tons</div>`;
+  if (d["CO2"]) {
+    content += `<div class="tooltip-row">CO2:${d["CO2"]} metric tons</div>`;
   }
+  content+=`</div>`
   return content;
 }

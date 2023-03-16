@@ -8611,21 +8611,21 @@ exports.getContents = getContents;
  */
 function getContents(d) {
   // TODO : Generate tooltip contents
-  console.log(d);
-  var name = d.name;
-  var population = d3.format(',')(d.population);
-  var gdp = d3.format('$,.2f')(d.gdp);
-  var co2 = d3.format(',')(d.co2);
-  var content = "<div class=\"tooltip-label\">".concat(name, "</div>");
-  if (d.population) {
-    content += "<div class=\"tooltip-row\">Population: ".concat(population, "</div>");
+
+  var content = "<div class=\"tooltip-label\">";
+  if (d["Country Name"]) {
+    content += "<div class=\"tooltip-row\">Country:".concat(d["Country Name"], "</div>");
   }
-  if (d.gdp) {
-    content += "<div class=\"tooltip-row\">GDP: ".concat(gdp, "</div>");
+  if (d["Population"]) {
+    content += "<div class=\"tooltip-row\">Population:".concat(d["Population"], "</div>");
   }
-  if (d.co2) {
-    content += "<div class=\"tooltip-row\">CO2 Emissions: ".concat(co2, " metric tons</div>");
+  if (d["GDP"]) {
+    content += "<div class=\"tooltip-row\">GDP:".concat(d["GDP"], "</div>");
   }
+  if (d["CO2"]) {
+    content += "<div class=\"tooltip-row\">CO2:".concat(d["CO2"], " metric tons</div>");
+  }
+  content += "</div>";
   return content;
 }
 },{}],"scripts/viz.js":[function(require,module,exports) {
@@ -8685,12 +8685,10 @@ function setCircleHoverHandler(tip) {
   // TODO : Set hover handler. The tooltip shows on
   // hover and the opacity goes up to 100% (from 70%)
   var bubbles = d3.select('#circles').selectAll('circle');
-  console.log(bubbles);
   bubbles.on('mouseover', function (event, d) {
     // increase opacity
-    var content = (0, _tooltip.getContents)(bubbles.data().at(0));
-    console.log(content);
-    (0, _legend.drawLegend)(20, content, 10);
+    var circle = d3.select(d)._groups.at(0).at(0);
+    console.log(circle);
     d3.select(this).style('opacity', 1);
   });
   bubbles.on('mouseout', function (event, d) {

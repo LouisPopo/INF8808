@@ -58,13 +58,10 @@ export function setCircleHoverHandler (tip) {
   // hover and the opacity goes up to 100% (from 70%)
   const bubbles = d3.select('#circles').selectAll('circle');
 
-  console.log(bubbles)
-
   bubbles.on('mouseover', function(event, d) {
     // increase opacity
-    const content=getContents(bubbles.data().at(0))
-    console.log(content)
-    drawLegend(20,content,10)
+    const circle = d3.select(d)._groups.at(0).at(0);
+    console.log(circle)
     d3.select(this).style('opacity', 1);
   });
 
