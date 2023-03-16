@@ -64,8 +64,6 @@ export function setCircleHoverHandler (tip) {
     const content=getContents(circle)
 
     d3.select(this).style('opacity', 1);
-    
-    console.log(d3.select(d))
 
     tip.offsetX=event.offsetX;
     tip.offsetY=event.offsetY;
