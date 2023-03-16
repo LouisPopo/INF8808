@@ -8588,10 +8588,7 @@ function drawLegend(colorScale, g, width) {
   // TODO : Draw the legend using d3Legend
   // For help, see : https://d3-legend.susielu.com/
 
-  console.log(colorScale.domain());
-  console.log(colorScale.range());
-  var legend = (0, _d3SvgLegend.legendColor)().scale(colorScale).shapePadding(5).shapeWidth(50).shapeHeight(20).labelOffset(12).title("ABC");
-  console.log(legend);
+  var legend = (0, _d3SvgLegend.legendColor)().scale(colorScale).shapePadding(5).shapeWidth(50).shapeHeight(20).labelOffset(12).title("Legend");
   g.append('g').attr('class', 'legend').attr('transform', "translate(".concat(width - 100, ", 20)")).call(legend);
 }
 },{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"scripts/tooltip.js":[function(require,module,exports) {
@@ -8688,14 +8685,19 @@ function setCircleHoverHandler(tip) {
   bubbles.on('mouseover', function (event, d) {
     // increase opacity
     var circle = d3.select(d)._groups.at(0).at(0);
-    console.log(circle);
     var content = (0, _tooltip.getContents)(circle);
-    console.log(content);
     d3.select(this).style('opacity', 1);
+    console.log(d3.select(d));
+    tip.offsetX = event.offsetX;
+    tip.offsetY = event.offsetY;
+    tip.html(content);
+    tip.style('left', event.pageX + 'px');
+    tip.style('top', event.pageY + 'px');
+    tip.show();
   });
   bubbles.on('mouseout', function (event, d) {
-    // reset opacity
     d3.select(this).style('opacity', 0.7);
+    tip.hide();
   });
 }
 

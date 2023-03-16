@@ -61,15 +61,24 @@ export function setCircleHoverHandler (tip) {
   bubbles.on('mouseover', function(event, d) {
     // increase opacity
     const circle = d3.select(d)._groups.at(0).at(0);
-    console.log(circle)
     const content=getContents(circle)
-    console.log(content)
+
     d3.select(this).style('opacity', 1);
+    
+    console.log(d3.select(d))
+
+    tip.offsetX=event.offsetX;
+    tip.offsetY=event.offsetY;
+    tip.html(content)
+    tip.style('left',event.pageX + 'px')
+    tip.style('top', event.pageY+'px')
+    tip.show()
+  
   });
 
   bubbles.on('mouseout', function(event, d) {
-    // reset opacity
     d3.select(this).style('opacity', 0.7);
+    tip.hide()
   });
   
 }
