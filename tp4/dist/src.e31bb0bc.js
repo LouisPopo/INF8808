@@ -309,108 +309,6 @@ function setYScale(height, data) {
   var maxCO2 = d3.max(CO2S);
   return d3.scaleLog().domain([0.01, maxCO2]).range([height, 0]);
 }
-},{}],"scripts/viz.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.drawCircles = drawCircles;
-exports.moveCircles = moveCircles;
-exports.positionLabels = positionLabels;
-exports.setCircleHoverHandler = setCircleHoverHandler;
-exports.setTitleText = setTitleText;
-/**
- * Positions the x axis label and y axis label.
- *
- * @param {*} g The d3 Selection of the graph's g SVG element
- * @param {number} width The width of the graph
- * @param {number} height The height of the graph
- */
-function positionLabels(g, width, height) {
-  // TODO : Position axis labels
-  g.select('.x.axis-text').attr('x', width / 2).attr('y', height + 40);
-  g.select('.y.axis-text').attr('x', -40).attr('y', height / 2);
-}
-
-/**
- * Draws the circles on the graph.
- *
- * @param {object} data The data to bind to
- * @param {*} rScale The scale for the circles' radius
- * @param {*} colorScale The scale for the circles' color
- */
-function drawCircles(data, rScale, colorScale) {
-  // TODO : Draw the bubble chart's circles
-  // Each circle's size depends on its population
-  // and each circle's color depends on its continent.
-  // The fill opacity of each circle is 70%
-  // The outline of the circles is white
-
-  var g = d3.select('#graph-g').append('g').attr('id', 'circles');
-  d3.select('#circles').selectAll('circle').data(data).enter().append('circle').attr('r', function (d) {
-    return rScale(d.Population);
-  }).attr('fill', function (d) {
-    return colorScale(d.Continent);
-  }).attr('fill-opacity', 0.7).attr('stroke', 'white');
-}
-
-/**
- * Sets up the hover event handler. The tooltip should show on on hover.
- *
- * @param {*} tip The tooltip
- */
-function setCircleHoverHandler(tip) {
-  // TODO : Set hover handler. The tooltip shows on
-  // hover and the opacity goes up to 100% (from 70%)
-}
-
-/**
- * Updates the position of the circles based on their bound data. The position
- * transitions gradually.
- *
- * @param {*} xScale The x scale used to position the circles
- * @param {*} yScale The y scale used to position the circles
- * @param {number} transitionDuration The duration of the transition
- */
-function moveCircles(xScale, yScale, transitionDuration) {
-  // TODO : Set up the transition and place the circle centers
-  // in x and y according to their GDP and CO2 respectively
-
-  d3.select('#circles').selectAll('circle').transition(transitionDuration).attr('cx', function (d) {
-    return xScale(d.GDP);
-  }).attr('cy', function (d) {
-    return yScale(d.CO2);
-  });
-}
-
-/**
- * Update the title of the graph.
- *
- * @param {number} year The currently displayed year
- */
-function setTitleText(year) {
-  // TODO : Set the title
-}
-},{}],"scripts/tooltip.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.getContents = getContents;
-/**
- * Defines the contents of the tooltip. See CSS for tooltip styling. The tooltip
- * features the country name, population, GDP, and CO2 emissions, preceded
- * by a label and followed by units where applicable.
- *
- * @param {object} d The data associated to the hovered element
- * @returns {string} The tooltip contents
- */
-function getContents(d) {
-  // TODO : Generate tooltip contents
-  return '';
-}
 },{}],"../node_modules/d3-svg-legend/node_modules/d3-selection/src/namespaces.js":[function(require,module,exports) {
 "use strict";
 
@@ -8678,8 +8576,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.drawLegend = drawLegend;
-var _d3SvgLegend = _interopRequireDefault(require("d3-svg-legend"));
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _d3SvgLegend = require("d3-svg-legend");
 /**
  * Draws the legend.
  *
@@ -8690,8 +8587,142 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function drawLegend(colorScale, g, width) {
   // TODO : Draw the legend using d3Legend
   // For help, see : https://d3-legend.susielu.com/
+
+  console.log(colorScale.domain());
+  console.log(colorScale.range());
+  var legend = (0, _d3SvgLegend.legendColor)().scale(colorScale).shapePadding(5).shapeWidth(50).shapeHeight(20).labelOffset(12).title("ABC");
+  console.log(legend);
+  g.append('g').attr('class', 'legend').attr('transform', "translate(".concat(width - 100, ", 20)")).call(legend);
 }
-},{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"../node_modules/d3-tip/node_modules/d3-selection/src/namespaces.js":[function(require,module,exports) {
+},{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"scripts/tooltip.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getContents = getContents;
+/**
+ * Defines the contents of the tooltip. See CSS for tooltip styling. The tooltip
+ * features the country name, population, GDP, and CO2 emissions, preceded
+ * by a label and followed by units where applicable.
+ *
+ * @param {object} d The data associated to the hovered element
+ * @returns {string} The tooltip contents
+ */
+function getContents(d) {
+  // TODO : Generate tooltip contents
+  var name = d.name;
+  var population = d3.format(',')(d.population);
+  var gdp = d3.format('$,.2f')(d.gdp);
+  var co2 = d3.format(',')(d.co2);
+  var content = "<div class=\"tooltip-label\">".concat(name, "</div>");
+  if (d.population) {
+    content += "<div class=\"tooltip-row\">Population: ".concat(population, "</div>");
+  }
+  if (d.gdp) {
+    content += "<div class=\"tooltip-row\">GDP: ".concat(gdp, "</div>");
+  }
+  if (d.co2) {
+    content += "<div class=\"tooltip-row\">CO2 Emissions: ".concat(co2, " metric tons</div>");
+  }
+  return content;
+}
+},{}],"scripts/viz.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.drawCircles = drawCircles;
+exports.moveCircles = moveCircles;
+exports.positionLabels = positionLabels;
+exports.setCircleHoverHandler = setCircleHoverHandler;
+exports.setTitleText = setTitleText;
+var _legend = require("./legend");
+var _tooltip = require("./tooltip");
+/**
+ * Positions the x axis label and y axis label.
+ *
+ * @param {*} g The d3 Selection of the graph's g SVG element
+ * @param {number} width The width of the graph
+ * @param {number} height The height of the graph
+ */
+function positionLabels(g, width, height) {
+  // TODO : Position axis labels
+  g.select('.x.axis-text').attr('x', width / 2).attr('y', height + 40);
+  g.select('.y.axis-text').attr('x', -40).attr('y', height / 2);
+}
+
+/**
+ * Draws the circles on the graph.
+ *
+ * @param {object} data The data to bind to
+ * @param {*} rScale The scale for the circles' radius
+ * @param {*} colorScale The scale for the circles' color
+ */
+function drawCircles(data, rScale, colorScale) {
+  // TODO : Draw the bubble chart's circles
+  // Each circle's size depends on its population
+  // and each circle's color depends on its continent.
+  // The fill opacity of each circle is 70%
+  // The outline of the circles is white
+
+  var g = d3.select('#graph-g').append('g').attr('id', 'circles');
+  d3.select('#circles').selectAll('circle').data(data).enter().append('circle').attr('r', function (d) {
+    return rScale(d.Population);
+  }).attr('fill', function (d) {
+    return colorScale(d.Continent);
+  }).attr('fill-opacity', 0.7).attr('stroke', 'white');
+}
+
+/**
+ * Sets up the hover event handler. The tooltip should show on on hover.
+ *
+ * @param {*} tip The tooltip
+ */
+function setCircleHoverHandler(tip) {
+  // TODO : Set hover handler. The tooltip shows on
+  // hover and the opacity goes up to 100% (from 70%)
+  var bubbles = d3.select('#circles').selectAll('circle');
+  console.log(bubbles);
+  bubbles.on('mouseover', function (event, d) {
+    // increase opacity
+    d3.select(this).style('opacity', 1);
+  });
+  bubbles.on('mouseout', function (event, d) {
+    // reset opacity
+    d3.select(this).style('opacity', 0.7);
+  });
+}
+
+/**
+ * Updates the position of the circles based on their bound data. The position
+ * transitions gradually.
+ *
+ * @param {*} xScale The x scale used to position the circles
+ * @param {*} yScale The y scale used to position the circles
+ * @param {number} transitionDuration The duration of the transition
+ */
+function moveCircles(xScale, yScale, transitionDuration) {
+  // TODO : Set up the transition and place the circle centers
+  // in x and y according to their GDP and CO2 respectively
+
+  d3.select('#circles').selectAll('circle').transition(transitionDuration).attr('cx', function (d) {
+    return xScale(d.GDP);
+  }).attr('cy', function (d) {
+    return yScale(d.CO2);
+  });
+}
+
+/**
+ * Update the title of the graph.
+ *
+ * @param {number} year The currently displayed year
+ */
+function setTitleText(year) {
+  // TODO : Set the title
+}
+},{"./legend":"scripts/legend.js","./tooltip":"scripts/tooltip.js"}],"../node_modules/d3-tip/node_modules/d3-selection/src/namespaces.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10511,7 +10542,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50041" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54008" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
