@@ -70,6 +70,7 @@ export function setCircleHoverHandler (tip) {
     tip.html(content)
     tip.style('left',event.pageX + 'px')
     tip.style('top', event.pageY+'px')
+    tip.style('font-weight',300)
     tip.show(d, this)
   
   });

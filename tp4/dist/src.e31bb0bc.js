@@ -269,7 +269,7 @@ function setColorScale(data) {
   data['2015'].forEach(function (d) {
     continents.add(d.Continent);
   });
-  return d3.scaleOrdinal(d3.schemeSet1);
+  return d3.scaleOrdinal(d3.schemeSet1).domain(continents);
 }
 
 /**
@@ -8588,8 +8588,10 @@ function drawLegend(colorScale, g, width) {
   // TODO : Draw the legend using d3Legend
   // For help, see : https://d3-legend.susielu.com/
 
-  var legend = (0, _d3SvgLegend.legendColor)().scale(colorScale).shapePadding(5).shapeWidth(50).shapeHeight(20).labelOffset(12).title("Legend");
-  g.append('g').attr('class', 'legend').attr('transform', "translate(".concat(width - 100, ", 20)")).call(legend);
+  var domain = colorScale.domain().sort();
+  colorScale.domain(domain);
+  var legend = (0, _d3SvgLegend.legendColor)().scale(colorScale).ascending(false).labelAlign('start').shapePadding(5).shape('circle').shapeWidth(15).shapeHeight(15).labelOffset(12).title("Legend");
+  g.append('g').attr('class', 'legend').attr('transform', "translate(".concat(width, ", -40)")).call(legend);
 }
 },{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"scripts/tooltip.js":[function(require,module,exports) {
 "use strict";
@@ -8611,16 +8613,16 @@ function getContents(d) {
 
   var content = "<div class=\"tooltip-label\">";
   if (d["Country Name"]) {
-    content += "<div class=\"tooltip-row\">Country:".concat(d["Country Name"], "</div>");
+    content += "<div class=\"tooltip-row\"><b>Country</b>: ".concat(d["Country Name"], "</div>");
   }
   if (d["Population"]) {
-    content += "<div class=\"tooltip-row\">Population:".concat(d["Population"], "</div>");
+    content += "<div class=\"tooltip-row\"><b>Population</b> : ".concat(d["Population"], "</div>");
   }
   if (d["GDP"]) {
-    content += "<div class=\"tooltip-row\">GDP:".concat(d["GDP"], "</div>");
+    content += "<div class=\"tooltip-row\"><b>GDP</b> : ".concat(d["GDP"], "</div>");
   }
   if (d["CO2"]) {
-    content += "<div class=\"tooltip-row\">CO2:".concat(d["CO2"], " metric tons</div>");
+    content += "<div class=\"tooltip-row\"><b>CO2</b> : ".concat(d["CO2"], " metric tons</div>");
   }
   content += "</div>";
   return content;
@@ -8687,13 +8689,13 @@ function setCircleHoverHandler(tip) {
     var circle = d3.select(d)._groups.at(0).at(0);
     var content = (0, _tooltip.getContents)(circle);
     d3.select(this).style('opacity', 1);
-    console.log(d3.select(d));
     tip.offsetX = event.offsetX;
     tip.offsetY = event.offsetY;
     tip.html(content);
     tip.style('left', event.pageX + 'px');
     tip.style('top', event.pageY + 'px');
-    tip.show();
+    tip.style('font-weight', 300);
+    tip.show(d, this);
   });
   bubbles.on('mouseout', function (event, d) {
     d3.select(this).style('opacity', 0.7);
@@ -10548,7 +10550,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54008" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54959" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
