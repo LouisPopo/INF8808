@@ -8607,7 +8607,10 @@ exports.getContents = getContents;
  *
  * @param {object} d The data associated to the hovered element
  * @returns {string} The tooltip contents
+ *
  */
+
+var one_hundred = 100;
 function getContents(d) {
   // TODO : Generate tooltip contents
 
@@ -8619,7 +8622,7 @@ function getContents(d) {
     content += "<div class=\"tooltip-row\"><b>Population</b> : ".concat(d["Population"], "</div>");
   }
   if (d["GDP"]) {
-    content += "<div class=\"tooltip-row\"><b>GDP</b> : ".concat(d["GDP"], " $ (USD)</div>");
+    content += "<div class=\"tooltip-row\"><b>GDP</b> : ".concat(Math.round(d["GDP"] * one_hundred) / one_hundred, " $ (USD)</div>");
   }
   if (d["CO2"]) {
     content += "<div class=\"tooltip-row\"><b>CO2</b> : ".concat(d["CO2"], " metric tonnes</div>");

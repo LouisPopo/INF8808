@@ -5,7 +5,11 @@
  *
  * @param {object} d The data associated to the hovered element
  * @returns {string} The tooltip contents
+ *
  */
+
+const one_hundred = 100; 
+
 export function getContents (d) {
   // TODO : Generate tooltip contents
 
@@ -20,7 +24,7 @@ export function getContents (d) {
   }
   
   if (d["GDP"]) {
-    content += `<div class="tooltip-row"><b>GDP</b> : ${d["GDP"]} $ (USD)</div>`;
+    content += `<div class="tooltip-row"><b>GDP</b> : ${Math.round(d["GDP"] * one_hundred)/one_hundred} $ (USD)</div>`;
   }
 
   if (d["CO2"]) {
