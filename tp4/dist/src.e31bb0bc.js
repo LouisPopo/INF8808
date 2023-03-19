@@ -8619,10 +8619,10 @@ function getContents(d) {
     content += "<div class=\"tooltip-row\"><b>Population</b> : ".concat(d["Population"], "</div>");
   }
   if (d["GDP"]) {
-    content += "<div class=\"tooltip-row\"><b>GDP</b> : ".concat(d["GDP"], "</div>");
+    content += "<div class=\"tooltip-row\"><b>GDP</b> : ".concat(d["GDP"], " $ (USD)</div>");
   }
   if (d["CO2"]) {
-    content += "<div class=\"tooltip-row\"><b>CO2</b> : ".concat(d["CO2"], " metric tons</div>");
+    content += "<div class=\"tooltip-row\"><b>CO2</b> : ".concat(d["CO2"], " metric tonnes</div>");
   }
   content += "</div>";
   return content;
