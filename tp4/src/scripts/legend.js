@@ -11,17 +11,25 @@ export function drawLegend (colorScale, g, width) {
   // TODO : Draw the legend using d3Legend
   // For help, see : https://d3-legend.susielu.com/
 
+  const domain = colorScale.domain().sort();
+  colorScale.domain(domain);
+
+
   const legend = legendColor()
     .scale(colorScale)
+    .ascending(false)
+    .labelAlign('start')
     .shapePadding(5)
-    .shapeWidth(50)
-    .shapeHeight(20)
+    .shape('circle')
+    .shapeWidth(15)
+    .shapeHeight(15)
     .labelOffset(12)
     .title("Legend")
 
-    g.append('g')
+
+  g.append('g')
     .attr('class', 'legend')
-    .attr('transform', `translate(${width - 100}, 20)`)
+    .attr('transform', `translate(${width}, -40)`)
     .call(legend);
 
 

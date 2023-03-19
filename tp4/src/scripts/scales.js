@@ -42,7 +42,7 @@ export function setColorScale (data) {
   data['2000'].forEach((d) => { continents.add(d.Continent) })
   data['2015'].forEach((d) => { continents.add(d.Continent) })
   
-  return d3.scaleOrdinal(d3.schemeSet1)
+  return d3.scaleOrdinal(d3.schemeSet1).domain(continents)
 }
 
 /**
