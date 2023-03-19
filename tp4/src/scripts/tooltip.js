@@ -17,19 +17,19 @@ export function getContents (d) {
   let content = `<div class="tooltip-label">`;
 
   if(d["Country Name"]) {
-    content+=`<div class="tooltip-row"><b>Country</b>: ${d["Country Name"]}</div>`;
+    content+=`<div class="tooltip-row"><b>Country :</b> ${d["Country Name"]}</div>`;
   }
 
   if(d["Population"]) {
-    content += `<div class="tooltip-row"><b>Population</b> : ${d["Population"]}</div>`;
+    content += `<div class="tooltip-row"><b>Population :</b>  ${d["Population"]}</div>`;
   }
   
   if (d["GDP"]) {
-    content += `<div class="tooltip-row"><b>GDP</b> : ${d["GDP"].toFixed(two)} $ (USD)</div>`;
+    content += `<div class="tooltip-row"><b>GDP : </b>  ${d["GDP"].toFixed(two)} $ (USD)</div>`;
   }
 
   if (d["CO2"]) {
-    content += `<div class="tooltip-row"><b>CO2</b> : ${d["CO2"].toFixed(two)} metric tonnes</div>`;
+    content += `<div class="tooltip-row"><b>CO2 : </b>  ${d["CO2"].toFixed(two)} metric tonnes</div>`;
   }
   content+=`</div>`
   return content;
