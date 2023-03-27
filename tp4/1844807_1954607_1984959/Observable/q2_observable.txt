@@ -1,0 +1,17 @@
+yScale = function setYScale () {
+  // TODO : Define the linear scale in y for the scatter plot
+
+  const maxCO22000 = d3.max(
+    countries['2000'], function (c) {
+        return c.CO2
+    })
+
+  const maxCO22015 = d3.max(
+    countries['2015'], function (c) {
+        return c.CO2
+    })
+
+  const maxCO2 = maxCO22000 > maxCO22015 ? maxCO22000 : maxCO22015
+
+  return d3.scaleLinear().domain([0, maxCO2]).range([innerHeight,0 + margin.top])
+}

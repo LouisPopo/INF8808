@@ -1,0 +1,29 @@
+function draw (year, g, xScale, yScale) {
+
+  const xAxis = d3.axisBottom(xScale);
+  const yAxis = d3.axisLeft(yScale);
+  
+  g.append('g')
+    .selectAll('circle')
+    .data(countries[year])
+    .enter()
+    .append('circle')
+    .attr('cx', function(d) { return xScale(d.GDP)})
+    .attr('cy', function(d) { return yScale(d.CO2)})
+    .attr('r', 1)
+    .attr('fill', 'black')
+
+  g.append('g')
+    .attr("transform", `translate(0,${innerHeight})`)
+    .call(xAxis)
+    .style("font-size", "4px")
+
+  g.append('g')
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(yAxis)
+    .style("font-size", "4px")
+
+  
+  
+  return g.node()
+}

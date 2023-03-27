@@ -1,0 +1,17 @@
+xScale = function setXScale () {  
+  
+  const maxGDP2000 = d3.max(
+    countries['2000'], function (c) {
+        return c.GDP
+    })
+
+  const maxGDP2015 = d3.max(
+    countries['2015'], function (c) {
+        return c.GDP
+    })
+
+  const maxGDP = maxGDP2000 > maxGDP2015 ? maxGDP2000 : maxGDP2015
+
+  return d3.scaleLinear().domain([0, maxGDP]).range([margin.left,innerWidth])
+  
+}
