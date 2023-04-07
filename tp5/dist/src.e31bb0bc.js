@@ -262,7 +262,11 @@ function mapBackground(data, path, showMapLabel) {
   // TODO : Generate the map background and set the hover handlers
   // TODO : Call showMapLabel when a neighborhood is hovered
 
-  d3.select('#map-g').selectAll('path').data(data.features).join('path').attr('d', path).attr('fill', 'white').attr('stroke', 'black').attr('pointer-events', 'visibleStroke').on('mouseover', showMapLabel);
+  d3.select('#map-g').selectAll('path').data(data.features).join('path').attr('d', path).attr('fill', 'white').attr('stroke', 'black').on('mouseover', function () {
+    showMapLabel(this, path);
+  }).on('mouseout', function () {
+    d3.select(this.parentNode).select('text').remove();
+  });
 }
 
 /**
@@ -275,10 +279,11 @@ function mapBackground(data, path, showMapLabel) {
  */
 function showMapLabel(d, path) {
   // TODO : Show the map label at the center of the neighborhood
-  // by calculating the centroid for its polygon
-  // print on console the path object we are hovering with the mouseover event
 
-  console.log(path);
+  var e = d3.select(d);
+  var coords = path.centroid(e.data()[0].geometry);
+  var nom = e.data()[0].properties.NOM;
+  d3.select(d.parentNode).append('text').attr('x', coords[0]).attr('y', coords[1]).attr('text-anchor', 'middle').text(nom).attr('visibility', 'visible');
 }
 
 /**
@@ -293,6 +298,19 @@ function mapMarkers(data, color, panel) {
   // Their color corresponds to the type of site and their outline is white.
   // Their radius is 5 and goes up to 6 while hovered by the cursor.
   // When clicked, the panel is displayed.
+
+  console.log(data);
+  d3.select('#map-g').selectAll('circle').data(data.features).join('circle').attr('cx', function (d) {
+    return d.x;
+  }).attr('cy', function (d) {
+    return d.y;
+  }).attr('stroke', 'white').attr('r', 5).attr('fill', function (d) {
+    return color(d.properties.TYPE_SITE_INTERVENTION);
+  }).attr('class', 'marker').on('mouseover', function () {
+    d3.select(this).attr('r', 6);
+  }).on('mouseout', function () {
+    d3.select(this).attr('r', 5);
+  });
 }
 },{}],"../node_modules/process/browser.js":[function(require,module,exports) {
 
@@ -30560,6 +30578,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function drawLegend(colorScale, g) {
   // TODO : Generate the legend
   // For help, see : https://d3-legend.susielu.com/
+  g.append('g').attr('transform', 'translate(50, 150)').call(_d3SvgLegend.default.legendColor().scale(colorScale).shape('circle').shapePadding(10).labelOffset(10).title('Légende').titleWidth(100).labelAlign('start').orient('vertical'));
 }
 },{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"scripts/panel.js":[function(require,module,exports) {
 "use strict";
@@ -30700,7 +30719,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55454" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54291" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

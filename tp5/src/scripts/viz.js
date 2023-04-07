@@ -30,8 +30,14 @@ export function mapBackground (data, path, showMapLabel) {
     .attr('d', path)
     .attr('fill', 'white')
     .attr('stroke', 'black')
-    .attr('pointer-events', 'visibleStroke')
-    .on('mouseover', showMapLabel)
+    .on('mouseover', function () {
+      showMapLabel(this, path)
+    })
+    .on('mouseout', function () {
+      d3.select(this.parentNode)
+        .select('text')
+        .remove()
+    })
 }
 
 /**
@@ -44,10 +50,19 @@ export function mapBackground (data, path, showMapLabel) {
  */
 export function showMapLabel (d, path) {
   // TODO : Show the map label at the center of the neighborhood
-  // by calculating the centroid for its polygon
-  // print on console the path object we are hovering with the mouseover event
-  
-  console.log(path)
+
+  const e = d3.select(d)
+
+  const coords = path.centroid(e.data()[0].geometry)
+  const nom = e.data()[0].properties.NOM
+
+  d3.select(d.parentNode)
+    .append('text')
+    .attr('x', coords[0])
+    .attr('y', coords[1])
+    .attr('text-anchor', 'middle')
+    .text(nom)
+    .attr('visibility', 'visible')
 }
 
 /**
@@ -62,4 +77,25 @@ export function mapMarkers (data, color, panel) {
   // Their color corresponds to the type of site and their outline is white.
   // Their radius is 5 and goes up to 6 while hovered by the cursor.
   // When clicked, the panel is displayed.
+
+  console.log(data)
+
+  d3.select('#map-g')
+    .selectAll('circle')
+    .data(data.features)
+    .join('circle')
+    .attr('cx', function (d) { return d.x })
+    .attr('cy', function (d) { return d.y })
+    .attr('stroke', 'white')
+    .attr('r', 5)
+    .attr('fill', function (d) { return color(d.properties.TYPE_SITE_INTERVENTION) })
+    .attr('class', 'marker')
+    .on('mouseover', function () {
+      d3.select(this)
+        .attr('r', 6)
+    })
+    .on('mouseout', function () {
+      d3.select(this)
+        .attr('r', 5)
+    })
 }
