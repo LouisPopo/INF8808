@@ -1,3 +1,5 @@
+import * as turf from '@turf/turf'
+
 const TITLES = {
   '1. Noyau villageois': 'Noyau villageois',
   '2. Rue commerciale de quartier, d’ambiance ou de destination': 'Rue commerciale de quartier, d’ambiance ou de destination',
@@ -21,6 +23,11 @@ export function convertCoordinates (data, projection) {
   // representing its x and y position according to the projection.
   // Each resulting object should be structured as :
 
+  data.features.forEach(element => {
+    const [x, y] = projection([element.geometry.coordinates[0], element.geometry.coordinates[1]])
+    element.x = x
+    element.y = y
+  })
   /*
     {
       type:'...'
@@ -40,6 +47,9 @@ export function convertCoordinates (data, projection) {
  */
 export function simplifyDisplayTitles (data) {
   // TODO : Simplify the titles as required
+  data.features.forEach(element => {
+    element.properties.TYPE_SITE_INTERVENTION = TITLES[element.properties.TYPE_SITE_INTERVENTION]
+  })
 }
 
 /**
@@ -48,6 +58,7 @@ export function simplifyDisplayTitles (data) {
  * @param {*} data The data to be displayed
  * @returns {*} The GeoJson data with reversed coordinates.
  */
- export function reverseGeoJsonCoordinates (data) {
+export function reverseGeoJsonCoordinates (data) {
   // TODO : Rewind the GeoJso data.
+  return turf.rewind(data, { reverse: true })
 }

@@ -5,7 +5,9 @@
  * @param {object[]} data The data to be displayed
  */
 export function colorDomain (color, data) {
-  // Set the color domain
+  // Set the color domain that has range of colors and domain is values from data TYPE_SITE_INTERVENTION
+  // TODO : Set the color domain
+  color.domain(data.features.map(d => d.properties.TYPE_SITE_INTERVENTION))
 }
 
 /**
@@ -16,7 +18,20 @@ export function colorDomain (color, data) {
  * @param {Function} showMapLabel The function to call when a neighborhood is hovered
  */
 export function mapBackground (data, path, showMapLabel) {
+  // to display the neighborhood name.
+  // data.features is a list of feature in which geometry is a MultiPolygon
   // TODO : Generate the map background and set the hover handlers
+  // TODO : Call showMapLabel when a neighborhood is hovered
+
+  d3.select('#map-g')
+    .selectAll('path')
+    .data(data.features)
+    .join('path')
+    .attr('d', path)
+    .attr('fill', 'white')
+    .attr('stroke', 'black')
+    .attr('pointer-events', 'visibleStroke')
+    .on('mouseover', showMapLabel)
 }
 
 /**
@@ -30,6 +45,9 @@ export function mapBackground (data, path, showMapLabel) {
 export function showMapLabel (d, path) {
   // TODO : Show the map label at the center of the neighborhood
   // by calculating the centroid for its polygon
+  // print on console the path object we are hovering with the mouseover event
+  
+  console.log(path)
 }
 
 /**
