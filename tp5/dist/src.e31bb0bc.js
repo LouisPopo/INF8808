@@ -283,7 +283,7 @@ function showMapLabel(d, path) {
   var e = d3.select(d);
   var coords = path.centroid(e.data()[0].geometry);
   var nom = e.data()[0].properties.NOM;
-  d3.select(d.parentNode).append('text').attr('x', coords[0]).attr('y', coords[1]).attr('text-anchor', 'middle').text(nom).attr('visibility', 'visible');
+  d3.select(d.parentNode).append('text').attr('font-family', 'Open Sans Condensed').attr('x', coords[0]).attr('y', coords[1]).attr('text-anchor', 'middle').text(nom).attr('visibility', 'visible');
 }
 
 /**
@@ -30578,7 +30578,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function drawLegend(colorScale, g) {
   // TODO : Generate the legend
   // For help, see : https://d3-legend.susielu.com/
-  g.append('g').attr('transform', 'translate(50, 150)').call(_d3SvgLegend.default.legendColor().scale(colorScale).shape('circle').shapePadding(10).labelOffset(10).title('Légende').titleWidth(100).labelAlign('start').orient('vertical'));
+  g.append('g').attr('transform', 'translate(50, 120)').call(_d3SvgLegend.default.legendColor().scale(colorScale).shape('circle').shapePadding(10).labelOffset(10).title('Légende').titleWidth(100).labelAlign('start').orient('vertical')).attr('font-family', 'Open Sans Condensed');
 }
 },{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"scripts/panel.js":[function(require,module,exports) {
 "use strict";

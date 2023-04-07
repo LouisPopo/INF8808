@@ -10,7 +10,7 @@ export function drawLegend (colorScale, g) {
   // TODO : Generate the legend
   // For help, see : https://d3-legend.susielu.com/
   g.append('g')
-    .attr('transform', 'translate(50, 150)')
+    .attr('transform', 'translate(50, 120)')
     .call(d3Legend.legendColor()
       .scale(colorScale)
       .shape('circle')
@@ -21,4 +21,5 @@ export function drawLegend (colorScale, g) {
       .labelAlign('start')
       .orient('vertical')
     )
+    .attr('font-family', 'Open Sans Condensed')
 }

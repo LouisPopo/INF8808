@@ -58,6 +58,7 @@ export function showMapLabel (d, path) {
 
   d3.select(d.parentNode)
     .append('text')
+    .attr('font-family', 'Open Sans Condensed')
     .attr('x', coords[0])
     .attr('y', coords[1])
     .attr('text-anchor', 'middle')
