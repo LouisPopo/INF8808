@@ -21,7 +21,6 @@ export function display (d, color) {
     .style('font-family', 'Oswald')
     .style('font-size', '24px')
 
-  console.log(color)
   setTitle(title, d, color)
 
   const mode = panel
@@ -56,9 +55,9 @@ export function display (d, color) {
  */
 function setTitle (g, d, color) {
   // TODO : Set the title
-  //console.log(d)
-  //console.log(d3.select(this.d))
-  g.text(d.properties.NOM_PROJET).style('fill', 'red')
+  g.text(d.properties.NOM_PROJET)
+    .attr('fill', `${color}`)
+    .style('color', `${color}`)
 }
 
 /**
@@ -69,8 +68,6 @@ function setTitle (g, d, color) {
  */
 function setMode (g, d) {
   // TODO : Set the mode
-
-  //console.log(d.features[1].properties.MODE_IMPLANTATION)
   g.text(d.properties.MODE_IMPLANTATION)
 }
 
@@ -83,12 +80,9 @@ function setMode (g, d) {
  */
 function setTheme (g, d) {
   // TODO : Append a list element representing the given theme
-  console.log(d)
-  g.panel.theme.html('')
-  d.forEach(d => {
-    g.panel.theme.append('li').text(d)
-  })
-  g.append('li').text(d)
-
-  // console.log(d.features[0].properties.OBJECTIF_THEMATIQUE)
+  const themeElements = g.selectAll('li').select('li').data(d[1])
+  themeElements.enter()
+    .append('li')
+    .text(d)
+  themeElements.exit().remove()
 }
