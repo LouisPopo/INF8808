@@ -1,3 +1,5 @@
+import { display } from './panel'
+
 /**
  * Sets the domain of the color scale. Each type of site should have its own corresponding color.
  *
@@ -98,5 +100,9 @@ export function mapMarkers (data, color, panel) {
     .on('mouseout', function () {
       d3.select(this)
         .attr('r', 5)
+    })
+    .on('click', function () {
+      console.log('viz.js', d3.select(this))
+      display(this.data, this.color)
     })
 }

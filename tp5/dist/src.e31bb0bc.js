@@ -225,6 +225,83 @@ function getProjection() {
 function getPath(projection) {
   return d3.geoPath().projection(projection);
 }
+},{}],"scripts/panel.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.display = display;
+/**
+ * Displays the information panel when a marker is clicked.
+ *
+ * @param {object} d The data bound to the clicked marker
+ * @param {*} color The color scale used to select the title's color
+ */
+function display(d, color) {
+  var panel = d3.select('#panel').style('visibility', 'visible');
+  panel.selectAll('*').remove();
+  panel.append('div').style('text-align', 'right').style('font-family', 'Open Sans Condensed').style('font-size', '12px').style('cursor', 'pointer').text('FERMER').on('click', function () {
+    return panel.style('visibility', 'hidden');
+  });
+  var title = panel.append('div').style('font-family', 'Oswald').style('font-size', '24px');
+  setTitle(title, d, color);
+  var mode = panel.append('div').style('font-family', 'Oswald').style('font-size', '16px');
+  setMode(mode, d);
+  if (d.properties.OBJECTIF_THEMATIQUE) {
+    var theme = panel.append('div').attr('class', 'theme').style('font-family', 'Open Sans Condensed').style('font-size', '16px').text('Thématique : ');
+    var list = theme.append('ul');
+    d.properties.OBJECTIF_THEMATIQUE.split('\n').forEach(function (element) {
+      setTheme(list, element);
+    });
+  }
+}
+
+/**
+ * Displays the title of the information panel. Its color matches the color of the
+ * corresponding marker on the map.
+ *
+ * @param {*} g The d3 selection of the SVG g element containing the title
+ * @param {object} d The data to display
+ * @param {*} color The color scale to select the title's color
+ */
+function setTitle(g, d, color) {
+  // TODO : Set the title
+  console.log(d);
+  console.log(d3.select(this.d));
+  // g.text(d.features[d].properties.NOM_PROJET).style('fill', color)
+}
+
+/**
+ * Displays the mode in the information panel.
+ *
+ * @param {*} g The d3 selection of the SVG g element containing the mode
+ * @param {object} d The data to display
+ */
+function setMode(g, d) {
+  // TODO : Set the mode
+
+  console.log(d.features[1].properties.MODE_IMPLANTATION);
+  // g.text(d.features[0].properties.MODE_IMPLANTATION)
+}
+
+/**
+ * Displays the themes in the information panel. Each theme is appended
+ * as an HTML list item element.
+ *
+ * @param {*} g The d3 selection of the SVG g element containing the themes
+ * @param {object} d The data to display
+ */
+function setTheme(g, d) {
+  // TODO : Append a list element representing the given theme
+  // g.panel.theme.html('')
+  // d.forEach(d => {
+  //   g.panel.theme.append('li').text(d)
+  // })
+  // g.append('li').text(d)
+
+  // console.log(d.features[0].properties.OBJECTIF_THEMATIQUE)
+}
 },{}],"scripts/viz.js":[function(require,module,exports) {
 "use strict";
 
@@ -235,6 +312,7 @@ exports.colorDomain = colorDomain;
 exports.mapBackground = mapBackground;
 exports.mapMarkers = mapMarkers;
 exports.showMapLabel = showMapLabel;
+var _panel = require("./panel");
 /**
  * Sets the domain of the color scale. Each type of site should have its own corresponding color.
  *
@@ -310,9 +388,12 @@ function mapMarkers(data, color, panel) {
     d3.select(this).attr('r', 6);
   }).on('mouseout', function () {
     d3.select(this).attr('r', 5);
+  }).on('click', function () {
+    console.log('viz.js', d3.select(this));
+    (0, _panel.display)(this.data, this.color);
   });
 }
-},{}],"../node_modules/process/browser.js":[function(require,module,exports) {
+},{"./panel":"scripts/panel.js"}],"../node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -30580,71 +30661,7 @@ function drawLegend(colorScale, g) {
   // For help, see : https://d3-legend.susielu.com/
   g.append('g').attr('transform', 'translate(50, 120)').call(_d3SvgLegend.default.legendColor().scale(colorScale).shape('circle').shapePadding(10).labelOffset(10).title('Légende').titleWidth(100).labelAlign('start').orient('vertical')).attr('font-family', 'Open Sans Condensed');
 }
-},{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"scripts/panel.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.display = display;
-/**
- * Displays the information panel when a marker is clicked.
- *
- * @param {object} d The data bound to the clicked marker
- * @param {*} color The color scale used to select the title's color
- */
-function display(d, color) {
-  var panel = d3.select('#panel').style('visibility', 'visible');
-  panel.selectAll('*').remove();
-  panel.append('div').style('text-align', 'right').style('font-family', 'Open Sans Condensed').style('font-size', '12px').style('cursor', 'pointer').text('FERMER').on('click', function () {
-    return panel.style('visibility', 'hidden');
-  });
-  var title = panel.append('div').style('font-family', 'Oswald').style('font-size', '24px');
-  setTitle(title, d, color);
-  var mode = panel.append('div').style('font-family', 'Oswald').style('font-size', '16px');
-  setMode(mode, d);
-  if (d.properties.OBJECTIF_THEMATIQUE) {
-    var theme = panel.append('div').attr('class', 'theme').style('font-family', 'Open Sans Condensed').style('font-size', '16px').text('Thématique : ');
-    var list = theme.append('ul');
-    d.properties.OBJECTIF_THEMATIQUE.split('\n').forEach(function (element) {
-      setTheme(list, element);
-    });
-  }
-}
-
-/**
- * Displays the title of the information panel. Its color matches the color of the
- * corresponding marker on the map.
- *
- * @param {*} g The d3 selection of the SVG g element containing the title
- * @param {object} d The data to display
- * @param {*} color The color scale to select the title's color
- */
-function setTitle(g, d, color) {
-  // TODO : Set the title
-}
-
-/**
- * Displays the mode in the information panel.
- *
- * @param {*} g The d3 selection of the SVG g element containing the mode
- * @param {object} d The data to display
- */
-function setMode(g, d) {
-  // TODO : Set the mode
-}
-
-/**
- * Displays the themes in the information panel. Each theme is appended
- * as an HTML list item element.
- *
- * @param {*} g The d3 selection of the SVG g element containing the themes
- * @param {object} d The data to display
- */
-function setTheme(g, d) {
-  // TODO : Append a list element representing the given theme
-}
-},{}],"index.js":[function(require,module,exports) {
+},{"d3-svg-legend":"../node_modules/d3-svg-legend/indexRollupNext.js"}],"index.js":[function(require,module,exports) {
 'use strict';
 
 var helper = _interopRequireWildcard(require("./scripts/helper.js"));
@@ -30719,7 +30736,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54291" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50604" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
