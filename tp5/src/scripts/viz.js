@@ -81,8 +81,6 @@ export function mapMarkers (data, color, panel) {
   // Their radius is 5 and goes up to 6 while hovered by the cursor.
   // When clicked, the panel is displayed.
 
-  console.log(data)
-
   d3.select('#map-g')
     .selectAll('circle')
     .data(data.features)
@@ -102,7 +100,7 @@ export function mapMarkers (data, color, panel) {
         .attr('r', 5)
     })
     .on('click', function () {
-      console.log('viz.js', d3.select(this))
-      display(this.data, this.color)
+      const d = d3.select(this).data()[0]
+      display(d, color(d.properties.TYPE_SITE_INTERVENTION))
     })
 }
